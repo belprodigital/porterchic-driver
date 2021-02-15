@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Porter Chic Driver</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Porter chic wants to use your music</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Porter chic wants to use your calendars</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Porter Chic need your camera permission to  capture profile picture.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Porter chic wants to use your contacts</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Porter Chic needs location permission to live location update to customer and get near by orders.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Porter Chic needs location permission to live location update to customer and get near by orders.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Porter Chic needs location permission to live location update to customer and get near by orders.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Porter chic use your microphone for photos.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Porter chic wants to use your Motion</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Porter Chic need your photos permission to  capture profile picture.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Porter chic wants to use your speech</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+</dict>
+</plist>

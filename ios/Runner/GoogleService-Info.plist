@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1038335244150-ogudco5deukmqahi30c5pe3cnec5cga8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1038335244150-ogudco5deukmqahi30c5pe3cnec5cga8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBSmrJtcNga5YWTlZ4zSQ3E5s82GUUSyKg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1038335244150</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.porterchic.porterchicDriver</string>
+	<key>PROJECT_ID</key>
+	<string>porter-chic</string>
+	<key>STORAGE_BUCKET</key>
+	<string>porter-chic.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1038335244150:ios:fe864590878066c1c3ec57</string>
+	<key>DATABASE_URL</key>
+	<string>https://porter-chic.firebaseio.com</string>
+</dict>
+</plist>

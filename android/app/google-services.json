@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1038335244150",
+    "firebase_url": "https://porter-chic.firebaseio.com",
+    "project_id": "porter-chic",
+    "storage_bucket": "porter-chic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038335244150:android:43d34dc8a7647465c3ec57",
+        "android_client_info": {
+          "package_name": "com.porterchic.porterchic_driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038335244150-8kcseubrssr4o1vhq6ggp8mlqjg0i2sa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh7QLkDtpEM91BX6s_FTkZxqcgCvDY6sc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038335244150-8kcseubrssr4o1vhq6ggp8mlqjg0i2sa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
