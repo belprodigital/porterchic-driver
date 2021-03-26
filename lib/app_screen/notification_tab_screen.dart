@@ -140,7 +140,7 @@ class NotificationTabScreenState extends State<NotificationTabScreen> {
                           Row(
                             children: <Widget>[
                               Image.asset(list[index].type=="Order picked up"?ImageAssests.deliverdNoti:
-                              list[index].type=="assign_order"?ImageAssests.createOrderNoti:
+                              list[index].type=="order_create" || list[index].type=="order_status"?ImageAssests.createOrderNoti:
                               list[index].type=="new_feedback"?ImageAssests.feedBackNoti:ImageAssests.deliverdNoti,height: 17.0,width: 17.0,color: list[index].type=="new_feedback"?starColor:isNewNoti?blueColor:textColor,),
                               SizedBox(
                                 width: 15.0,
@@ -171,18 +171,48 @@ class NotificationTabScreenState extends State<NotificationTabScreen> {
                               ),
                             ],
                           ),
+                          Visibility(
+                            visible: list[index].message.isNotEmpty,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 3.0,left: 32.0),
+                              child: CustomtextFields.textFields(
+                                  text: list[index].message,
+                                  fontSize: 16.0,
+                                  fontFamily: 'JosefinSans',
+                                  fontWeight: FontWeight.w400,
+                                  textColor: textColor,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  maxLines: 5
+                              ),
+                            ),
+                          ),
                           Container(
                             margin: EdgeInsets.only(top: 3.0,left: 32.0),
-                            child: CustomtextFields.textFields(
-                                text: list[index].message,
-                                fontSize: 16.0,
-                                fontFamily: 'JosefinSans',
-
-                                fontWeight: FontWeight.w400,
-                                textColor: textColor,
-                                textOverflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.start,
-                                maxLines: 5
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomtextFields.textFields(
+                                    text: orderIDLabel+": "+list[index].orderId,
+                                    fontSize: 16.0,
+                                    fontFamily: 'JosefinSans',
+                                    fontWeight: FontWeight.w400,
+                                    textColor: textColor,
+                                    textOverflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 1
+                                ),
+                                Visibility(
+                                  visible: list[index].status!=null && list[index].status==13,
+                                  child: CustomtextFields.textFields(
+                                      text: canceled,
+                                      textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16.0,
+                                      textColor: Colors.red
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ],
@@ -349,24 +379,20 @@ class NotificationTabScreenState extends State<NotificationTabScreen> {
   }
 
   String getTime(String date) {
-    int currentHour = int.parse(CommonMethod.formatDate(DateTime.now().millisecondsSinceEpoch, "HH"));
-    int notificationHour = int.parse(CommonMethod.getDate(date, "HH"));
-    myPrintTag("currentHour", currentHour);
-    myPrintTag("notificationHour", notificationHour);
-    if(currentHour>notificationHour){
-      myPrintTag("time", (currentHour-notificationHour));
-      return (currentHour-notificationHour).toString()+" hour ago";
-    }else{
-      int currentMin = int.parse(CommonMethod.formatDate(DateTime.now().millisecondsSinceEpoch, "mm"));
-      int notificationMin = int.parse(CommonMethod.getDate(date, "mm"));
-      myPrintTag("time", currentMin);
-      myPrintTag("time", notificationMin);
-      if(notificationMin<currentMin){
-        return (currentMin-notificationMin).toString()+" min ago";
+    String currentDate = CommonMethod.formatDate(DateTime.now().millisecondsSinceEpoch, "dd.MM.yyyy");
+    String notificationDate = CommonMethod.formatDateFromDate(date, "dd.MM.yyyy");
+    if(currentDate==notificationDate){
+      Duration duration = DateTime.now().difference(DateTime.parse(date));
+      if(duration.inHours>0){
+        return duration.inHours.toString()+" hour ago";
+      }
+      else if(duration.inMinutes>0){
+        return duration.inMinutes.toString()+" min ago";
       }else{
         return "now";
       }
-
+    }else{
+      return notificationDate;
     }
   }
 

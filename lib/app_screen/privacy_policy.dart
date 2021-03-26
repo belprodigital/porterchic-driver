@@ -12,8 +12,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white_color,
-        resizeToAvoidBottomPadding: false,
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: white_color,
@@ -36,10 +35,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
         ),
         body:  WebView(
-          initialUrl: "http://3.101.43.64:3000/pages/privacy-policy",
+          initialUrl: "https://admin.porterchic.com:8443/pages/privacy-policy",
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (value){
-            value.loadUrl("http://3.101.43.64:3000/pages/privacy-policy");
+            value.loadUrl("https://admin.porterchic.com:8443/pages/privacy-policy");
           },
         ));
   }

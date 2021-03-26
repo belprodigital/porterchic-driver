@@ -15,7 +15,9 @@ class CommonMethod {
     var date = new DateTime.fromMillisecondsSinceEpoch(timestamp);
     return format.format(date);
   }
-
+  static String formatDateFromDate(String date,String format){
+    return DateFormat(format).format(DateTime.parse(date));
+  }
 
   static  List decodePoly(String poly) {
     var list = poly.codeUnits;

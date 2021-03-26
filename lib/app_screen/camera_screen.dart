@@ -81,10 +81,10 @@ class _CameraScreenState extends State<CameraScreen> {
                    ),
                    GestureDetector(
                         onTap: ()async{
-                          if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                            await launch(launchWhatsApp(phone: "971555262865"));
+                          if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                            await launch(launchWhatsApp(phone: whatsAppNum));
                           }else{
-                            Fluttertoast.showToast(msg: "Please install WhatsApp");
+                            Fluttertoast.showToast(msg: msg_install_whatsapp);
                           }
                         },
                        child: Image.asset(
@@ -173,7 +173,7 @@ class _CameraScreenState extends State<CameraScreen> {
     Widget _cameraPreviewWidget() {
       if (_cameraController == null || !_cameraController.value.isInitialized) {
         return CustomtextFields.textFields(
-          text: "Loading",
+          text: loading,
           fontWeight: FontWeight.w400,
           fontSize: 16.0,
           textColor: white_color,

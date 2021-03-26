@@ -36,7 +36,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   var showLoader = false;
   bool isPasswordShow = true;
   bool isPassErrorShow = false;
-  String errorPassText = "This is required field";
+  String errorPassText = requireField;
   final GlobalKey<ScaffoldState> globalKey = GlobalKey();
 
   @override
@@ -220,7 +220,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         .isEmpty) {
       //Fluttertoast.showToast(msg: passwordEmpty);
       setState(() {
-        errorPassText = "This is required field";
+        errorPassText = requireField;
         isPassErrorShow = true;
         _passwordFocusNode.hasFocus;
       });

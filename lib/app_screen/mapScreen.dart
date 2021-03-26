@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:porterchic_driver/app_screen/otpVerificationScreen.dart';
 import 'package:porterchic_driver/app_screen/pickup_qrcode_screen.dart';
 import 'package:porterchic_driver/app_screen/scan_qrcode_screen.dart';
 import 'package:porterchic_driver/icons/back_icon_icons.dart';
@@ -115,6 +116,9 @@ class MapScreenState extends State<MapScreen> {
   void initState() {
     SharedPreferences.getInstance().then((sharedPreferences) {
       this.sharedPreferences = sharedPreferences;
+      setState(() {
+
+      });
       getPermission();
     });
 
@@ -451,20 +455,24 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> getCurrentLocation() async {
-     locationData = await location.getLocation();
-    GoogleMapController controller = await _controller.future;
-    if(widget.isForDeliery){
-      callStartDeliveryApi(locationData);
-    }
-    CameraPosition cameraPosition = CameraPosition(target: LatLng(
-      locationData.latitude,locationData.longitude,
-    ),
-      zoom: 16.00,
-
-    );
-    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    // print("position ${locationData.longitude}, ${locationData.latitude}");
-    updateCurrentMarker();
+     try {
+       locationData = await location.getLocation();
+           GoogleMapController controller = await _controller.future;
+           if(widget.isForDeliery){
+        callStartDeliveryApi(locationData);
+           }
+           CameraPosition cameraPosition = CameraPosition(target: LatLng(
+        locationData.latitude,locationData.longitude,
+           ),
+        zoom: 16.00,
+       
+           );
+           controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+           // print("position ${locationData.longitude}, ${locationData.latitude}");
+           updateCurrentMarker();
+     } on Exception catch (e) {
+       myPrintTag("error in location ", e.toString());
+     }
   }
 
   void updateCurrentMarker() {
@@ -489,7 +497,6 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future<void> getPermission() async {
-    myPrintTag("latlang", "$receiverLatitude , $receiverLongitude");
     bool isLocationOn = sharedPreferences.getBool(ApiConstants.locationOff);
     if(isLocationOn!=null && isLocationOn){
       if(!await Permission.location.isGranted){
@@ -508,7 +515,7 @@ class MapScreenState extends State<MapScreen> {
     }else{
       var alertDialog = AlertDialog(
         title: CustomtextFields.textFields(
-            text: "Porter chic",
+            text: "PorterChic",
             fontWeight: FontWeight.w600,
             fontSize: 22.0,
             textColor: blackColor
@@ -556,27 +563,27 @@ class MapScreenState extends State<MapScreen> {
 
   Future<void> allowLocation() async {
     if (!await location.serviceEnabled()) {
-      location.requestService().then((value) {
+      location.requestService().then((value) async {
         if (value) {
           sharedPreferences.setBool(ApiConstants.locationOff, true);
-          getCurrentLocation();
-          initWorkManager();
-          getLocationUpdate();
-          setLocationIcon();
+          await setLocationIcon();
+          await getCurrentLocation();
+          // initWorkManager();
+          await getLocationUpdate();
         }
       });
     } else {
       sharedPreferences.setBool(ApiConstants.locationOff, true);
-      getCurrentLocation();
-      initWorkManager();
-      getLocationUpdate();
-      setLocationIcon();
+      await setLocationIcon();
+      await getCurrentLocation();
+      // initWorkManager();
+      await getLocationUpdate();
     }
   }
 
   Future setLocationIcon() async{
     locationIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5,size: Size.fromHeight(10.0)), ImageAssests.direction);
-    pickUpIconIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5,size: Size.fromHeight(10.0)), !widget.isForDeliery?ImageAssests.pickUpMapIcon:ImageAssests.deliveryLocationPin);
+    pickUpIconIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5,size: Size.fromHeight(10.0)), widget.isForDeliery?ImageAssests.pickUpMapIcon:ImageAssests.deliveryLocationPin);
   }
 
   Future setPolyPoints(double latitude, double longitude) async{
@@ -746,12 +753,17 @@ class MapScreenState extends State<MapScreen> {
       param["type"]="pickup";
     }
     NetworkCall().callPostApi(param, ApiConstants.orderNotifyCustomer);
-    Map<String,dynamic> pickUpParam = Map();
-    pickUpParam["order_id"]=widget.id;
+    if(widget.isForDeliery){
+      Map<String,dynamic> deliveryParam = Map();
+      deliveryParam["order_id"]= widget.id;
+      NetworkCall().callPostApi(deliveryParam, ApiConstants.deliveryOtp);
+    }
+    // Map<String,dynamic> pickUpParam = Map();
+    /*pickUpParam["order_id"]=widget.id;
     param["timezone"]= currentTimeZone;
-    NetworkCall().callPostApi(pickUpParam, widget.isForDeliery?ApiConstants.deliveryCompleted:ApiConstants.pickUpCompleted);
+    NetworkCall().callPostApi(pickUpParam, widget.isForDeliery?ApiConstants.deliveryCompleted:ApiConstants.pickUpCompleted);*/
     Navigator.push(context, CupertinoPageRoute(
-      builder: (context)=>widget.isForDeliery?ScanQrCodeScreen(orderId: widget.id,):PickUpQrScreen(sId: widget.id,)
+      builder: (context)=>widget.isForDeliery?OtpVerificationScreen(isFromDelivery: true,orderId: widget.id,):PickUpQrScreen(sId: widget.id,)
     ));
   }
 
@@ -778,10 +790,16 @@ class MapScreenState extends State<MapScreen> {
   }
 
   void callStartDeliveryApi(LocationData locationData) {
-   updateDriverLocation(locationData.latitude, locationData.longitude).then((value){
-     Map<String,dynamic> param = Map();
-     NetworkCall().callPostApi(param, ApiConstants.startDelivery);
-   });
+
+    try{
+      updateDriverLocation(locationData.latitude, locationData.longitude).then((value) async {
+        Map<String,dynamic> param = Map();
+        param["order_id"] = widget.id;
+        await NetworkCall().callPostApi(param, ApiConstants.startDelivery);
+      }); 
+    }catch(e){
+      myPrintTag("crash in api ", e.toString());
+    }
   }
 
 }

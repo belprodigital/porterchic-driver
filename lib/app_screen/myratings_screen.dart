@@ -49,6 +49,9 @@ class _MyRatingsScreenState extends State<MyRatingsScreen> {
 
   void _scrollListner() {
     if(_scrollController.position.pixels==_scrollController.position.maxScrollExtent){
+      print(isApiCall);
+      print(page);
+      print(totalPage);
       if(!isApiCall){
         if(page!=totalPage-1){
           CommonMethod.isInternetOn().then((isInternetOn){
@@ -272,12 +275,13 @@ class _MyRatingsScreenState extends State<MyRatingsScreen> {
     if(showLoader){
       return Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(textColor),
+          valueColor: AlwaysStoppedAnimation<Color>(buttonColor),
         ),
       );
     }else{
       if(ratingData.length>0){
         return SingleChildScrollView(
+           controller: _scrollController,
           child: Container(
             margin: EdgeInsets.only(left: 20.0, right: 20.0),
             child: Column(

@@ -43,10 +43,10 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
   bool isListVisible = false;
   var showLoader = false;
 
-  List<Past> pastOrderList=List<Past>();
-  List<Active> activeOrderList=List<Active>();
-  List<Active> activeOrders=List<Active>();
-  List<Active> upComingOrders=List<Active>();
+  List<Past> pastOrderList=[];
+  List<Active> activeOrderList=[];
+  List<Active> activeOrders=[];
+  List<Active> upComingOrders=[];
 
   bool isSearchOn = false;
 
@@ -58,54 +58,57 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
 
 //    initFirebaseService();
     getProfile();
-    callOrderListApi(searchText: "",);
+    setState(() {
+      showLoader=true;
+    });
+    callOrderListApi(searchText: searchController.text.trim(),);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: white_color,
-      child: SafeArea(
-        child: GestureDetector(
-          onTap: (){
-            FocusScope.of(context).requestFocus(FocusNode());
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: () {
+            return callOrderListApi(searchText: searchController.text.trim(),);
           },
-          child: Scaffold(
-            key: _globalKey,
-            resizeToAvoidBottomPadding: false,
-            resizeToAvoidBottomInset: false,
-            backgroundColor: white_color,
-            body: Container(
-              padding: EdgeInsets.only(left: 20.0, right: 20.0,top: 5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
+          child: Container(
+             padding: EdgeInsets.only(left: 20.0, right: 20.0,top: 5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
                       color: orderSummeryBgColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12.0)
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
-                            controller: searchController,
-                            decoration: InputDecoration(
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          controller: searchController,
+                          decoration: InputDecoration(
                               hintText: search,
-                                suffixIcon: IconButton(icon: Icon(Icons.close,size: 24.0,color: textColor,),
-                                  onPressed: () {
-                                      setState(() {
-                                        isSearchOn=false;
-                                        searchController.text="";
-                                      });
-                                      Future.delayed(Duration(milliseconds: 500),(){
-                                        callOrderListApi(searchText: "");
-                                      });
+                              suffixIcon: IconButton(icon: Icon(Icons.close,size: 24.0,color: textColor,),
+                                onPressed: () {
+                                  setState(() {
+                                    isSearchOn=false;
+                                    searchController.text="";
+                                  });
+                                  Future.delayed(Duration(milliseconds: 500),(){
+                                    setState(() {
+                                      showLoader=true;
+                                    });
+                                    callOrderListApi(searchText:searchController.text.trim());
+                                  });
 
-                                  },
-                                ),
+                                },
+                              ),
                               prefixIcon: Container(
                                   margin: EdgeInsets.only(bottom: 5.0),
                                   child: Icon(DriverIcon.search,size: 16.0,color: textColor,)),
@@ -115,314 +118,312 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
                                   fontFamily: 'JosefinSans',
                                   fontWeight: FontWeight.w400),
                               border: InputBorder.none
-                            ),
-                            onChanged: (text){
-                              if(text.trim().isEmpty){
-                                isSearchOn=false;
-                                FocusScope.of(context).requestFocus(FocusNode());
-                              }else{
-                                isSearchOn=true;
-                              }
-                              setState(() {
-                              });
-                              Future.delayed(Duration(milliseconds: 500),(){
-                                callOrderListApi(searchText: text.trim());
-                              });
-                            },
-                            onFieldSubmitted: (value) {
-                              searchFocusNode.unfocus();
-                              FocusScope.of(context).requestFocus(FocusNode());
-                            },
-                            cursorColor: text_color,
-                            focusNode: searchFocusNode,
-                            textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.text,
-                            style: TextStyle(
-                                color: black_color.withOpacity(0.2),
-                                fontSize: 16.0,
-                                fontFamily: 'JosefinSans',
-                                fontWeight: FontWeight.w400),
                           ),
+                          onChanged: (text){
+                            if(text.trim().isEmpty){
+                              isSearchOn=false;
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            }else{
+                              isSearchOn=true;
+                            }
+                            setState(() {
+                            });
+                            Future.delayed(Duration(milliseconds: 500),(){
+                              setState(() {
+                                showLoader=true;
+                              });
+                              callOrderListApi(searchText: text.trim());
+                            });
+                          },
+                          onFieldSubmitted: (value) {
+                            searchFocusNode.unfocus();
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                          cursorColor: text_color,
+                          focusNode: searchFocusNode,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
+                          style: TextStyle(
+                              color: black_color.withOpacity(0.2),
+                              fontSize: 16.0,
+                              fontFamily: 'JosefinSans',
+                              fontWeight: FontWeight.w400),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                showLoader?Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(buttonColor),
                     ),
                   ),
-                  showLoader?Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(buttonColor),
-                      ),
-                    ),
-                  ):Expanded(
-                        child: SingleChildScrollView(
-                            controller: _scrollController,
-                            child:Stack(
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    activeOrderList.length>0?Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Visibility(
-                                          visible: activeOrders.length>0,
-                                          child: SizedBox(
-                                            height:20.0,
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: activeOrders.length>0,
-                                          child: DividerContainer.divider(
-                                            text: "ACTIVE",
-                                            textColor:textColor,
-                                            fontSize:14.0,
-                                            context: context,
-                                            dividerColor: divider_Color,
-                                          ),
-                                        ),
+                ):Expanded(
+                  child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child:Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          activeOrderList.length>0?Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Visibility(
+                                visible: activeOrders.length>0,
+                                child: SizedBox(
+                                  height:20.0,
+                                ),
+                              ),
+                              Visibility(
+                                visible: activeOrders.length>0,
+                                child: DividerContainer.divider(
+                                  text: "ACTIVE",
+                                  textColor:textColor,
+                                  fontSize:14.0,
+                                  context: context,
+                                  dividerColor: divider_Color,
+                                ),
+                              ),
 
-                                        Visibility(
-                                          visible: activeOrders.length>0,
-                                          child: ListView.builder(
-                                            itemCount: activeOrders.length,
-                                            shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
-                                            itemBuilder: (context, int index) {
-                                              return ItemUpcoming(activeOrderList:activeOrders[index]);
-                                            },
+                              Visibility(
+                                visible: activeOrders.length>0,
+                                child: ListView.builder(
+                                  itemCount: activeOrders.length,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemBuilder: (context, int index) {
+                                    return ItemUpcoming(activeOrderList:activeOrders[index]);
+                                  },
+                                ),
+                              ),
+                              Visibility(
+                                visible: upComingOrders.length>0,
+                                child: SizedBox(
+                                  height:20.0,
+                                ),
+                              ),
+                              Visibility(
+                                visible: upComingOrders.length>0,
+                                child: DividerContainer.divider(
+                                  text: "UPCOMING",
+                                  textColor:textColor,
+                                  fontSize:14.0,
+                                  context: context,
+                                  dividerColor: divider_Color,
+                                ),
+                              ),
+                              Visibility(
+                                visible: upComingOrders.length>0,
+                                child: ListView.builder(
+                                  itemCount: upComingOrders.length,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemBuilder: (context, int index) {
+                                    return ItemUpcoming(activeOrderList:upComingOrders[index]);
+                                  },
+                                ),
+                              )
+                            ],
+                          ):isSearchOn?Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height:20.0,
+                              ),
+                              DividerContainer.divider(
+                                text: "UPCOMING",
+                                textColor:textColor,
+                                fontSize:14.0,
+                                context: context,
+                                dividerColor: divider_Color,
+                              ),
+                              Container(
+                                height: MediaQuery.of(context).size.height/2,
+                                child: Center(
+                                  child: CustomtextFields.textFields(
+                                      text:"No items were found",
+                                      textColor: blackColor,
+                                      fontSize: 16.0,
+                                      fontFamily: "Mada",
+                                      fontWeight: FontWeight.w400
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ):Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height:20.0,
+                              ),
+                              DividerContainer.divider(
+                                text: "UPCOMING",
+                                textColor:textColor,
+                                fontSize:14.0,
+                                context: context,
+                                dividerColor: divider_Color,
+                              ),
+                              Center(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 20.0,bottom: 24.0),
+                                  height: 180.0,
+                                  width: 180.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: grey_color,
+                                  ),
+                                  child: Container(),
+                                ),
+                              ),
+                              CustomtextFields.textFields(
+                                  fontSize: 28.0,
+                                  text: "You are super superhero",
+                                  textColor: blackColor,
+                                  fontFamily: 'JosefinSans',
+
+                                  fontWeight: FontWeight.w700,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2
+                              ),
+                              SizedBox(
+                                height: 24.0,
+                              ),
+                              /* CustomtextFields.textFields(
+                                        fontSize: 16.0,
+                                        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                                        textColor: textColor,
+                                        fontFamily: 'JosefinSans',
+
+                                        fontWeight: FontWeight.w400,
+                                         textAlign: TextAlign.center,
+                                        maxLines: 2
+                                    ),
+                                    SizedBox(
+                                      height: 60.0,
+                                    ),*/
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top:15.0),
+                            child: DividerContainer.divider(
+                              text: "PAST DELIVERIES",
+                              textColor:divider_text_Color,
+                              fontSize:14.0,
+
+                              context: context,
+                              dividerColor: divider_Color,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              if(pastOrderList.length>0){
+                                setState(() {
+                                  isListVisible = !isListVisible;
+                                });
+                              }else{
+                                Fluttertoast.showToast(msg: noPastOrders);
+                              }
+                            },
+                            child:Container(
+                                color: Colors.transparent,
+                                margin: EdgeInsets.only(top: 25.0),
+                                child: Center(child:
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+
+                                      height: 30.0,width: 30.0,
+                                      decoration: BoxDecoration(
+                                          color: buttonColor,
+                                          image: DecorationImage(
+                                              scale: 3.0,
+                                              image: AssetImage(ImageAssests.refreshIcon)
                                           ),
+                                          shape: BoxShape.circle
+
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20.0,
+                                    ),
+                                    isListVisible ?
+                                    Column(
+                                      children: [
+                                        CustomtextFields.textFields(
+                                            text: "Hide Past" ,
+                                            fontFamily: 'JosefinSans',
+                                            textColor: textColor,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700
+
                                         ),
-                                        Visibility(
-                                          visible: upComingOrders.length>0,
-                                          child: SizedBox(
-                                            height:20.0,
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: upComingOrders.length>0,
-                                          child: DividerContainer.divider(
-                                            text: "UPCOMING",
-                                            textColor:textColor,
-                                            fontSize:14.0,
-                                            context: context,
-                                            dividerColor: divider_Color,
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: upComingOrders.length>0,
-                                          child: ListView.builder(
-                                            itemCount: upComingOrders.length,
-                                            shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
-                                            itemBuilder: (context, int index) {
-                                              return ItemUpcoming(activeOrderList:upComingOrders[index]);
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    ):isSearchOn?Column(
-                                      children: <Widget>[
                                         SizedBox(
-                                          height:20.0,
-                                        ),
-                                        DividerContainer.divider(
-                                          text: "UPCOMING",
-                                          textColor:textColor,
-                                          fontSize:14.0,
-                                          context: context,
-                                          dividerColor: divider_Color,
-                                        ),
-                                        Container(
-                                          height: MediaQuery.of(context).size.height/2,
-                                          child: Center(
-                                            child: CustomtextFields.textFields(
-                                              text:"No items were found",
-                                              textColor: blackColor,
-                                              fontSize: 16.0,
-                                              fontFamily: "Mada",
-                                              fontWeight: FontWeight.w400
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ):Column(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height:20.0,
-                                        ),
-                                        DividerContainer.divider(
-                                          text: "UPCOMING",
-                                          textColor:textColor,
-                                          fontSize:14.0,
-                                          context: context,
-                                          dividerColor: divider_Color,
-                                        ),
-                                        Center(
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 20.0,bottom: 24.0),
-                                            height: 180.0,
-                                            width: 180.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: grey_color,
-                                            ),
-                                            child: Container(),
-                                          ),
+                                          height: 5.0,
                                         ),
                                         CustomtextFields.textFields(
-                                            fontSize: 28.0,
-                                            text: "You are super superhero",
-                                            textColor: blackColor,
-                                            fontFamily: 'JosefinSans',
-
-                                            fontWeight: FontWeight.w700,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2
-                                        ),
-                                        SizedBox(
-                                          height: 24.0,
-                                        ),
-                                       /* CustomtextFields.textFields(
-                                            fontSize: 16.0,
-                                            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                                            text: "Deliveries"
+                                            ,fontFamily: 'JosefinSans',
                                             textColor: textColor,
-                                            fontFamily: 'JosefinSans',
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700
 
-                                            fontWeight: FontWeight.w400,
-                                             textAlign: TextAlign.center,
-                                            maxLines: 2
+                                        ),
+                                      ],
+                                    )
+                                        :
+                                    Column(
+                                      children: [
+                                        CustomtextFields.textFields(
+                                            text: "Show Past" ,
+                                            fontFamily: 'JosefinSans',
+                                            textColor: textColor,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700
+
                                         ),
                                         SizedBox(
-                                          height: 60.0,
-                                        ),*/
+                                          height: 5.0,
+                                        ),
+                                        CustomtextFields.textFields(
+                                            text: "Deliveries"
+                                            ,fontFamily: 'JosefinSans',
+                                            textColor: textColor,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w700
+
+                                        ),
                                       ],
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.only(top:15.0),
-                                      child: DividerContainer.divider(
-                                        text: "PAST DELIVERIES",
-                                        textColor:divider_text_Color,
-                                        fontSize:14.0,
-
-                                        context: context,
-                                        dividerColor: divider_Color,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        if(pastOrderList.length>0){
-                                          setState(() {
-                                            isListVisible = !isListVisible;
-                                          });
-                                        }else{
-                                          Fluttertoast.showToast(msg: noPastOrders);
-                                        }
-                                      },
-                                      child:Container(
-                                        color: Colors.transparent,
-                                          margin: EdgeInsets.only(top: 25.0),
-                                          child: Center(child:
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-
-                                                height: 30.0,width: 30.0,
-                                                decoration: BoxDecoration(
-                                                  color: buttonColor,
-                                                  image: DecorationImage(
-                                                    scale: 3.0,
-                                                    image: AssetImage(ImageAssests.refreshIcon)
-                                                  ),
-                                                  shape: BoxShape.circle
-
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 20.0,
-                                              ),
-                                              isListVisible ?
-                                              Column(
-                                                children: [
-                                                  CustomtextFields.textFields(
-                                                      text: "Hide Past" ,
-                                                      fontFamily: 'JosefinSans',
-                                                      textColor: textColor,
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.w700
-
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5.0,
-                                                  ),
-                                                  CustomtextFields.textFields(
-                                                      text: "Deliveries"
-                                                      ,fontFamily: 'JosefinSans',
-                                                      textColor: textColor,
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.w700
-
-                                                  ),
-                                                ],
-                                              )
-                                              :
-                                              Column(
-                                                children: [
-                                                  CustomtextFields.textFields(
-                                                      text: "Show Past" ,
-                                                      fontFamily: 'JosefinSans',
-                                                      textColor: textColor,
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.w700
-
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5.0,
-                                                  ),
-                                                  CustomtextFields.textFields(
-                                                      text: "Deliveries"
-                                                      ,fontFamily: 'JosefinSans',
-                                                      textColor: textColor,
-                                                      fontSize: 16.0,
-                                                      fontWeight: FontWeight.w700
-
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )
-
-                                          /*Image.asset(isListVisible?ImageAssests.hidePastDeliveries:ImageAssests.refreshIcon,height:24.0,)*/
-
-                                          )
-                                      ) ,
-                                    ),
-                                    Visibility(
-                                      visible: isListVisible,
-                                      child: ListView.builder(
-                                        itemCount: pastOrderList.length,
-                                        shrinkWrap: true,
-                                        physics: ClampingScrollPhysics(),
-                                        itemBuilder: (context, int index) {
-                                          return GestureDetector(
-                                              onTap: (){
-                                                Navigator.push(context, CupertinoPageRoute(
-                                                  builder: (context)=>OrderInfoScreen(id: pastOrderList[index].sId,)
-                                                ));
-                                              },
-                                              child: ItemPastDeliveries(pastItems: pastOrderList[index],)
-                                          );
-                                        },
-                                      ),
-                                    )
                                   ],
                                 )
-                              ],
-                            )
-                        ),
+
+                                  /*Image.asset(isListVisible?ImageAssests.hidePastDeliveries:ImageAssests.refreshIcon,height:24.0,)*/
+
+                                )
+                            ) ,
+                          ),
+                          Visibility(
+                            visible: isListVisible,
+                            child: ListView.builder(
+                              itemCount: pastOrderList.length,
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              itemBuilder: (context, int index) {
+                                return GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(context, CupertinoPageRoute(
+                                          builder: (context)=>OrderInfoScreen(id: pastOrderList[index].sId,)
+                                      ));
+                                    },
+                                    child: ItemPastDeliveries(pastItems: pastOrderList[index],)
+                                );
+                              },
+                            ),
+                          )
+                        ],
                       )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
@@ -450,10 +451,9 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
   }
 
   Future callOrderListApi({String searchText}) async{
-    setState(() {
-      showLoader=true;
-    });
+
     if(await CommonMethod.isInternetOn()){
+      // myPrintTag("timeZone",DateTime.now().toLocal().timeZoneName);
       currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
       Map<String,dynamic> params = Map();
       params["search"]=searchText;
@@ -475,7 +475,7 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
         }
         activeOrderList.addAll(orderListing.data.orderList.active);
         for(int i=0;i<activeOrderList.length;i++){
-          if(activeOrderList[i].status>=2 && activeOrderList[i].pickUpTime.isNotEmpty){
+          if(activeOrderList[i].status>=2 && activeOrderList[i].isPickupComplted==1){
             activeOrders.add(activeOrderList[i]);
           }else{
             upComingOrders.add(activeOrderList[i]);

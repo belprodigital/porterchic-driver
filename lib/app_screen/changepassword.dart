@@ -38,7 +38,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool isPassErrorShow = false;
   bool isConfirmPasswordShow = true;
   bool isConfirmPassErrorShow = false;
-  String errorPassText = "This is required field";
+  String errorPassText = requireField;
   final String texts;
 
 
@@ -50,8 +50,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       key: globalKey,
         backgroundColor: white_color,
-        resizeToAvoidBottomPadding: false,
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: white_color,
@@ -277,33 +276,33 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     if(_passwordController.text.trim().isEmpty){
       setState(() {
         isPassErrorShow = true;
-        errorPassText = "This is required field";
+        errorPassText = requireField;
         _passwordFocusNode.hasFocus;
       });
       return false;
     }else if(_passwordController.text.trim().length<6){
       setState(() {
         isPassErrorShow = true;
-        errorPassText = "Invalid password";
+        errorPassText = invalidPassword;
         _passwordFocusNode.hasFocus;
       });
       return false;
     }else if(isConfirmPasswordVisible && _confirmPasswordController.text.trim().isEmpty){
       setState(() {
         isConfirmPassErrorShow = true;
-        errorPassText = "This is required field";
+        errorPassText = requireField;
         _confirmPFocusNode.hasFocus;
       });
       return false;
     }else if(isConfirmPasswordVisible && _confirmPasswordController.text.trim().length<6){
       setState(() {
         isConfirmPassErrorShow = true;
-        errorPassText = "Invalid password";
+        errorPassText = invalidPassword;
         _confirmPFocusNode.hasFocus;
       });
       return false;
     }else if(isConfirmPasswordVisible && _confirmPasswordController.text.trim()!=_passwordController.text.trim()){
-      globalKey.currentState.showSnackBar(SnackBar(content: Text("New password and confirm password doesn't match"),));
+      globalKey.currentState.showSnackBar(SnackBar(content: Text(passwordNotMatch),));
       return false;
     }
     return true;

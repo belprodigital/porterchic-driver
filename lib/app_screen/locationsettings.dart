@@ -53,7 +53,6 @@ class _LocationSettingsScreenState extends State<LocationSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white_color,
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0.0,

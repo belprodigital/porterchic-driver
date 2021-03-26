@@ -32,6 +32,7 @@ class ApiConstants {
   static String driverUploadSignature = "order/upload-signature";
   static String feedbackList = "feedback-list";
   static String drivesData = "drives-data";
+  static String notificationCount= "notification-count";
   static String updateSetting= "update-setting";
 
   //sharedPrefrence

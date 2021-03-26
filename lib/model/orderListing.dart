@@ -103,6 +103,7 @@ class Active {
   String distance;
   String receiverTime;
   String pickUpTime;
+  int isPickupComplted;
 
   Active(
       {this.sId,
@@ -131,7 +132,9 @@ class Active {
         this.feedback,
         this.distance,
         this.receiverTime,
-        this.pickUpTime});
+        this.pickUpTime,
+        this.isPickupComplted
+      });
 
   Active.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -161,6 +164,7 @@ class Active {
     distance = json['distance'];
     receiverTime = json['receiver_time'];
     pickUpTime = json['pick_up_time'];
+    isPickupComplted = json['is_pickup_complted'];
   }
 
   Map<String, dynamic> toJson() {
@@ -192,6 +196,7 @@ class Active {
     data['distance'] = this.distance;
     data['receiver_time'] = this.receiverTime;
     data['pick_up_time'] = this.pickUpTime;
+    data['is_pickup_complted'] = this.isPickupComplted;
     return data;
   }
 }
@@ -224,6 +229,7 @@ class Past {
   String distance;
   String receiverTime;
   String pickUpTime;
+  int isPickupComplted;
 
   Past(
       {this.sId,
@@ -252,7 +258,9 @@ class Past {
         this.feedback,
         this.distance,
         this.receiverTime,
-        this.pickUpTime});
+        this.pickUpTime,
+        this.isPickupComplted
+      });
 
   Past.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -282,6 +290,7 @@ class Past {
     distance = json['distance'];
     receiverTime = json['receiver_time'];
     pickUpTime = json['pick_up_time'];
+    isPickupComplted = json['is_pickup_complted'];
   }
 
   Map<String, dynamic> toJson() {
@@ -313,6 +322,7 @@ class Past {
     data['distance'] = this.distance;
     data['receiver_time'] = this.receiverTime;
     data['pick_up_time'] = this.pickUpTime;
+    data['is_pickup_complted'] = this.isPickupComplted;
     return data;
   }
 }

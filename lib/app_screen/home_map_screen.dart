@@ -57,9 +57,12 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
   void initState() {
     SharedPreferences.getInstance().then((sharedPreferences){
       this.sharedPreferences=sharedPreferences;
+      setState(() {
+
+      });
+      setLocationIcon();
       getPermission();
     });
-    setLocationIcon();
     super.initState();
   }
 
@@ -243,7 +246,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
       _markers.add(
         Marker(
             markerId: MarkerId("marker #${activeOrderList[i].sId}"),
-          position: activeOrderList[i].status>=2 && activeOrderList[i].pickUpTime.isNotEmpty?
+          position: activeOrderList[i].status>=2 && activeOrderList[i].isPickupComplted==1?
           LatLng(double.parse(activeOrderList[i].receiverLatitude),double.parse(activeOrderList[i].receiverLongitude)):
           LatLng(double.parse(activeOrderList[i].pickupLatitude),double.parse(activeOrderList[i].pickupLongitude)),
           icon: getIcon(i,index),
@@ -256,7 +259,10 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
               this.index = i ;
               isInfoVisible=true;
             });
-              if(activeOrderList[i].status<=2 && activeOrderList[i].pickUpTime.isEmpty){
+              if(activeOrderList[i].status>=2 && activeOrderList[i].isPickupComplted==1){
+                setPolyLines(sourceLatitude: activeOrderList[i].receiverLatitude, sourceLongitude: activeOrderList[i].receiverLongitude,
+                    destinationLatitude: locationData.latitude.toString(),destinationLongitude: locationData.longitude.toString());
+              }else{
                 _markers.add(
                     Marker(
                         markerId: MarkerId("deliverMarker #${activeOrderList[i].sId}"),
@@ -265,11 +271,8 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
                     )
                 );
                 setPolyLines(sourceLatitude: activeOrderList[i].pickupLatitude, sourceLongitude: activeOrderList[i].pickupLongitude,
-                  destinationLatitude: activeOrderList[i].receiverLatitude,destinationLongitude: activeOrderList[i].receiverLongitude
+                    destinationLatitude: activeOrderList[i].receiverLatitude,destinationLongitude: activeOrderList[i].receiverLongitude
                 );
-              }else{
-                setPolyLines(sourceLatitude: activeOrderList[i].receiverLatitude, sourceLongitude: activeOrderList[i].receiverLongitude,
-                destinationLatitude: locationData.latitude.toString(),destinationLongitude: locationData.longitude.toString());
               }
           }
         ),
@@ -319,7 +322,7 @@ class _HomeMapScreenState extends State<HomeMapScreen> {
   }
 
   BitmapDescriptor getIcon(int i, int index) {
-    if(activeOrderList[i].status>=2 && activeOrderList[i].pickUpTime.isNotEmpty){
+    if(activeOrderList[i].status>=2 && activeOrderList[i].isPickupComplted==1){
       if(index==i){
         return activeDeliveryLocatioIcon;
       }else{

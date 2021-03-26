@@ -67,10 +67,10 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                           ),
                           GestureDetector(
                               onTap: () async{
-                                if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                                  await launch(launchWhatsApp(phone: "971555262865"));
+                                if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                                  await launch(launchWhatsApp(phone: whatsAppNum));
                                 }else{
-                                  Fluttertoast.showToast(msg: "Please install WhatsApp");
+                                  Fluttertoast.showToast(msg: msg_install_whatsapp);
                                 }
                               },
                               child: Image.asset(
@@ -89,7 +89,9 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                             onQRViewCreated: (controller ) {
                               this.controller=controller;
                               controller.scannedDataStream.listen((event) {
-                                // print(event);
+                                if(event==widget.orderId){
+
+                                }
                               });
                           }, key: qrKey,
 
@@ -135,10 +137,10 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                       SizedBox(height: 26.0,),
                       GestureDetector(
                         onTap:()async{
-                          if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                            await launch(launchWhatsApp(phone: "971555262865"));
+                          if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                            await launch(launchWhatsApp(phone: whatsAppNum));
                           }else{
-                            Fluttertoast.showToast(msg: "Please install WhatsApp");
+                            Fluttertoast.showToast(msg: msg_install_whatsapp);
                           }
                         },
                         child: Row(

@@ -63,6 +63,7 @@ class Order {
   String receiverFirstName;
   String receiverLastName;
   String receiverMobile;
+  String receiverEmail;
   String receiverAddress;
   String receiverInstruction;
   String receiverLatitude;
@@ -87,6 +88,7 @@ class Order {
   int otp;
   String distance;
   String pickUpTime;
+  int is_pickup_complted;
   String receiverTime;
   String driveToReceiver;
   int otpVerify;
@@ -103,10 +105,12 @@ class Order {
         this.pickupLatitude,
         this.pickupLongitude,
         this.pickupDate,
+        this.is_pickup_complted,
         this.pickupTime,
         this.receiverFirstName,
         this.receiverLastName,
         this.receiverMobile,
+        this.receiverEmail,
         this.receiverAddress,
         this.receiverInstruction,
         this.receiverLatitude,
@@ -147,6 +151,7 @@ class Order {
     pickupInstruction = json['pickup_instruction'];
     pickupLatitude = json['pickup_latitude'];
     pickupLongitude = json['pickup_longitude'];
+    is_pickup_complted = json['is_pickup_complted'];
     pickupDate = json['pickup_date'];
     pickupTime = json['pickup_time'];
     receiverFirstName = json['receiver_first_name'];
@@ -154,6 +159,7 @@ class Order {
     mobile = json['mobile'];
     receiverMobile = json['receiver_mobile'];
     receiverAddress = json['receiver_address'];
+    receiverEmail = json['receiver_email'];
     receiverInstruction = json['receiver_instruction'];
     receiverLatitude = json['receiver_latitude'];
     receiverLongitude = json['receiver_longitude'];
@@ -200,6 +206,7 @@ class Order {
     data['receiver_last_name'] = this.receiverLastName;
     data['receiver_mobile'] = this.receiverMobile;
     data['receiver_address'] = this.receiverAddress;
+    data['receiver_email'] = this.receiverEmail;
     data['receiver_instruction'] = this.receiverInstruction;
     data['receiver_latitude'] = this.receiverLatitude;
     data['receiver_longitude'] = this.receiverLongitude;
@@ -228,6 +235,7 @@ class Order {
     data['otp_verify'] = this.otpVerify;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
+    data['is_pickup_complted'] = this.is_pickup_complted;
     return data;
   }
 }

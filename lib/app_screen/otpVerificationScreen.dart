@@ -46,7 +46,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   Timer timer;
 
   bool isOtpErrorShow = false;
-  String errorOtpText = "This is required field";
+  String errorOtpText = requireField;
 
   @override
   void initState() {
@@ -251,7 +251,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   bool isValid() {
     if(_confirmationCodeController.text.trim().isEmpty){
       setState(() {
-        errorOtpText = "This is required field";
+        errorOtpText = requireField;
         isOtpErrorShow = true;
         _confirmCodeFocusNode.hasFocus;
 

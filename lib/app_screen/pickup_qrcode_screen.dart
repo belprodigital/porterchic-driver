@@ -129,7 +129,7 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                   SizedBox(
                     height: 60.0,
                   ),
-                  DividerContainer.divider(
+                  /*DividerContainer.divider(
                     text: havingProblems.toUpperCase(),
                     context: context,
                     textColor: textColor,
@@ -153,13 +153,13 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                         radiusSize: 0.0
                     ),
                   ),
-                  SizedBox(height: 26.0,),
+                  SizedBox(height: 26.0,),*/
                   GestureDetector(
                     onTap: () async{
-                      if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                      await launch(launchWhatsApp(phone: "971555262865"));
+                      if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                      await launch(launchWhatsApp(phone: whatsAppNum));
                       }else{
-                      Fluttertoast.showToast(msg: "Please install WhatsApp");
+                      Fluttertoast.showToast(msg: msg_install_whatsapp);
                       }
                     },
                     child: Row(

@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:porterchic_driver/app_screen/home_map_screen.dart';
 import 'package:porterchic_driver/app_screen/myDelieveriesScreen.dart';
@@ -11,10 +14,14 @@ import 'package:porterchic_driver/app_screen/order_Info_screen.dart';
 import 'package:porterchic_driver/app_screen/profile_screen.dart';
 import 'package:porterchic_driver/app_screen/whatsapp_screen.dart';
 import 'package:porterchic_driver/icons/bottombar_icon_icons.dart';
+import 'package:porterchic_driver/model/user_data_model.dart';
+import 'package:porterchic_driver/networkCall/apiConstatnts.dart';
+import 'package:porterchic_driver/networkCall/networkCalling.dart';
 import 'package:porterchic_driver/styles/colors.dart';
 import 'package:porterchic_driver/styles/customTextFields.dart';
 import 'package:porterchic_driver/utils/imagesAssests.dart';
 import 'package:porterchic_driver/utils/myprint.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'myratings_screen.dart';
 
@@ -25,11 +32,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentTabIndex = 0;
+  int count;
+  String userId;
+  UserDataModel userDataModel;
+  bool isKeyboardVisible = false;
   var firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     initFirebaseService();
+    SharedPreferences.getInstance().then((sharedPreferences){
+    userDataModel = UserDataModel.fromJson(json.decode(sharedPreferences.getString(ApiConstants.userData)));
+    getNotificationCount();
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          isKeyboardVisible = visible;
+        });
+
+      },
+    );
+  });
     super.initState();
   }
 
@@ -42,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       color: white_color,
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
             backgroundColor: white_color,
             body: Column(
               children: <Widget>[
@@ -93,59 +117,98 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(child: navigateToScreen(_currentTabIndex)),
               ],
             ),
-            bottomNavigationBar: Container(
-              margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 8.0),
+            bottomNavigationBar: !isKeyboardVisible?Container(
+              margin: EdgeInsets.only(top: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  IconButton(
-                    icon: Image.asset(
-                      ImageAssests.myDelivery,
-                      height: 22.0,
-                      color: _currentTabIndex == 0 ? blackColor : textColor,
+                  Expanded(
+                    child: IconButton(
+                      icon: Image.asset(
+                        ImageAssests.myDelivery,
+                        height: 22.0,
+                        color: _currentTabIndex == 0 ? blackColor : textColor,
+                      ),
+                      onPressed: () {
+                        if (_currentTabIndex == 0) {
+                          return;
+                        }
+                        setState(() {
+                          _currentTabIndex = 0;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      if (_currentTabIndex == 0) {
-                        return;
-                      }
-                      setState(() {
-                        _currentTabIndex = 0;
-                      });
-                    },
                   ),
-                  IconButton(
-                    icon: Image.asset(
-                      ImageAssests.mapIcon,
-                      height: 22.0,
-                      color: _currentTabIndex == 1 ? blackColor : textColor,
+                  Expanded(
+                    child: IconButton(
+                      alignment: Alignment.center,
+                      icon: Image.asset(
+                        ImageAssests.mapIcon,
+                        height: 22.0,
+                        color: _currentTabIndex == 1 ? blackColor : textColor,
+                      ),
+                      onPressed: () {
+                        if (_currentTabIndex == 1) {
+                          return;
+                        }
+                        setState(() {
+                          _currentTabIndex = 1;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      if (_currentTabIndex == 1) {
-                        return;
-                      }
-                      setState(() {
-                        _currentTabIndex = 1;
-                      });
-                    },
                   ),
-                  IconButton(
-                    icon: Image.asset(
-                      ImageAssests.bellIcon,
-                      height: 22.0,
-                      color: _currentTabIndex == 2 ? blackColor : textColor,
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center
+                      ,
+                      children: [
+                        IconButton(
+                          icon: Image.asset(
+                            ImageAssests.bellIcon,
+                            height: 22.0,
+                            color: _currentTabIndex == 2 ? blackColor : textColor,
+                          ),
+                          onPressed: () {
+                            count=0;
+                            if (_currentTabIndex == 2) {
+                              return;
+                            }
+                            setState(() {
+                              _currentTabIndex = 2;
+                            });
+                          },
+                        ),
+                        Positioned(
+                          right: 31.0,
+                          top: 3.0,
+                          child: Visibility(
+                            visible: count!=null && count!=0,
+                            child: Container(
+                              width: 35.0,
+                              decoration: BoxDecoration(
+                                  color: blackColor,
+                                  shape: BoxShape.circle
+                              ),
+                              padding: EdgeInsets.all(5.0),
+                              child: CustomtextFields.textFields(
+                                  text: count!=null?count>10?"10+":count.toString():"",
+                                  textColor: white_color,
+                                  fontFamily: "JosefinSans",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12.0,
+                                  textAlign: TextAlign.center,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  maxLines: 2),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: () {
-                      if (_currentTabIndex == 2) {
-                        return;
-                      }
-                      setState(() {
-                        _currentTabIndex = 2;
-                      });
-                    },
                   ),
                 ],
               ),
-            )),
+            ):SizedBox(),
+        ),
       ),
     );
   }
@@ -180,6 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        updateCount();
         myPrintTag("new notification", message);
         showNotification(message: message);
       },
@@ -216,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Image.asset(
                           message["type"] == "Order picked up"
                               ? ImageAssests.deliverdNoti
-                              : message["type"] == "assign_order"
+                              : message["type"] == "order_create" || message["type"] == "order_status"
                                   ? ImageAssests.createOrderNoti
                                   : message["type"] == "new_feedback"
                                       ? ImageAssests.feedBackNoti
@@ -228,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Image.asset(
                           message["data"]["type"] == "Order picked up"
                               ? ImageAssests.deliverdNoti
-                              : message["type"] == "assign_order"
+                              : message["type"] == "order_create" || message["type"] == "order_status"
                                   ? ImageAssests.createOrderNoti
                                   : message["type"] == "new_feedback"
                                       ? ImageAssests.feedBackNoti
@@ -307,4 +371,30 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
   }
+
+  void updateCount() {
+    print("tab $_currentTabIndex");
+    if(_currentTabIndex!=2){
+      print(count);
+      if(count!=null){
+        count++;
+        print(count);
+        setState(() {
+
+        });
+      }
+    }
+  }
+
+  void getNotificationCount() async{
+    Map<String,dynamic> param = Map();
+    param["user_id"]= userDataModel.userId;
+    Response response = await NetworkCall().callPostApi(param,ApiConstants.notificationCount);
+    Map<String,dynamic> data = json.decode(response.body);
+    count = int.parse(data["data"]);
+    setState(() {
+
+    });
+  }
+
 }

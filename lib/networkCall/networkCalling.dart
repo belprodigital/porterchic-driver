@@ -17,7 +17,7 @@ class NetworkCall{
     myPrintTag("body", param);
     myPrintTag("Api", methodName);
     Response response = await http.post(ApiConstants.base_url+methodName,headers: header,body: jsonEncode(param));
-    myPrintTag("response", response.body);
+    myPrintTag("Api $methodName response", response.body);
     return response;
   }
 

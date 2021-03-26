@@ -102,7 +102,7 @@ class _ItemPastDeliveriesState extends State<ItemPastDeliveries> {
                               children: <Widget>[
                               RatingBar(
                                   itemSize:16.0 ,
-                                  initialRating: widget.pastItems.rating!=null?0:double.parse(widget.pastItems.rating),
+                                  initialRating: widget.pastItems.rating!=null && widget.pastItems.rating.isNotEmpty?double.parse(widget.pastItems.rating):0,
                                    minRating: 1,
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
@@ -110,13 +110,20 @@ class _ItemPastDeliveriesState extends State<ItemPastDeliveries> {
                                     ignoreGestures: true,
                                     unratedColor: divider_Color,
                                     itemPadding: EdgeInsets.symmetric(horizontal:0.0),
-                                   itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                     color: Colors.amber,
-                              ),
                               onRatingUpdate: (rating) {
                                 // print(rating);
                               },
+                                ratingWidget: RatingWidget(
+                                  empty: Container(
+                                  margin: EdgeInsets.only(right: 5.0),
+                                    child: Image.asset(ImageAssests.emptyRating)),
+                                  full: Container(
+                                      margin: EdgeInsets.only(right: 5.0),
+                                      child: Image.asset(ImageAssests.fullRating)),
+                                   half: Container(
+                                       margin: EdgeInsets.only(right: 5.0),
+                                       child: Image.asset(ImageAssests.halfRating)),
+                              ),
                             ),
                                 SizedBox(width: 5.0,),
                                 Container(

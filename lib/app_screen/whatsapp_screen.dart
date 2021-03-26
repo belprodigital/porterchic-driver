@@ -19,69 +19,67 @@ class _WhatsAppScreenState extends State<WhatsAppScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white_color,
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(left: 20.0,right: 20.0,top: 30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only( top: 20.0,bottom: 15.0),
-                  height:190.0,
-                  width: 190.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: grey_color,
-                  ),
-                  child: Container(),
+      body: Container(
+        margin: EdgeInsets.only(left: 20.0,right: 20.0,top: 30.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Container(
+                margin: EdgeInsets.only( top: 20.0,bottom: 15.0),
+                height:190.0,
+                width: 190.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: grey_color,
                 ),
+                child: Container(),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 30.0,bottom: 20.0),
-                child: CustomtextFields.textFields(
-                    fontSize: 24.0,
-                    text: whatsAppService,
-                    fontFamily: 'JosefinSans',
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30.0,bottom: 20.0),
+              child: CustomtextFields.textFields(
+                  fontSize: 24.0,
+                  text: whatsAppService,
+                  fontFamily: 'JosefinSans',
 
-                    textColor: blackColor,
-                    textAlign: TextAlign.center,
-                    fontWeight: FontWeight.w700,
-                    maxLines: 4),
-              ),
-              /*Container(
-                margin: EdgeInsets.only(top: 20.0,bottom: 32.0),
-                child: CustomtextFields.textFields(
-                    fontSize: 16.0,
-                    textOverflow: TextOverflow.ellipsis,
-                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    textColor: textColor,
-                    fontFamily: 'JosefinSans',
-
-                    textAlign: TextAlign.center,
-                    maxLines: 4),
-              ),*/
-              CustomButtons.loginButton(
+                  textColor: blackColor,
+                  textAlign: TextAlign.center,
+                  fontWeight: FontWeight.w700,
+                  maxLines: 4),
+            ),
+            /*Container(
+              margin: EdgeInsets.only(top: 20.0,bottom: 32.0),
+              child: CustomtextFields.textFields(
                   fontSize: 16.0,
-                  textColor: white_color,
-                  backgroundColor: buttonColor,
+                  textOverflow: TextOverflow.ellipsis,
+                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  textColor: textColor,
+                  fontFamily: 'JosefinSans',
 
-                  radiusSize: 0.0,
+                  textAlign: TextAlign.center,
+                  maxLines: 4),
+            ),*/
+            CustomButtons.loginButton(
+                fontSize: 16.0,
+                textColor: white_color,
+                backgroundColor: buttonColor,
 
-                  text: conversationOnWhatsApp,
-                  function: () async{
-                      if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                        await launch(launchWhatsApp(phone: "971555262865"));
-                      }else{
-                        Fluttertoast.showToast(msg: "Please install WhatsApp application.");
-                      }
-                  }
-              ),
-              SizedBox(
-                height: 20.0,
-              )
-            ],
-          ),
+                radiusSize: 0.0,
+
+                text: conversationOnWhatsApp,
+                function: () async{
+                    if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                      await launch(launchWhatsApp(phone: whatsAppNum));
+                    }else{
+                      Fluttertoast.showToast(msg: msg_install_whatsapp);
+                    }
+                }
+            ),
+            SizedBox(
+              height: 20.0,
+            )
+          ],
         ),
       ),
     );

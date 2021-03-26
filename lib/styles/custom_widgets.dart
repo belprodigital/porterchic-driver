@@ -68,7 +68,7 @@ class CustomWidgets{
         ),
         child: Center(
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(textColor),
+            valueColor: AlwaysStoppedAnimation<Color>(buttonColor),
           ),
         ),
       ),

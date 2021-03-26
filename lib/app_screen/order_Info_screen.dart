@@ -72,6 +72,23 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
               color: blackColor,
             ),
               ),
+              actions: [
+                Visibility(
+                  visible: order.status!=null && order.status==13 ,
+                  child: Center(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10.0),
+                      child: CustomtextFields.textFields(
+                          text: canceled,
+                          textAlign: TextAlign.center,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                          textColor: Colors.red
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             body: getMainWidget()),
       ),
@@ -298,9 +315,9 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           getTitle(title: orderInfo.toUpperCase()+" #"+(i+1).toString()),
-          getDetails(title: deliveryId,subtitle: order.sId),
+          getDetails(title: orderIDLabel,subtitle: order.sId),
           getDetails(title: productType,subtitle: products[i].productType),
-          getDetails(title: price,subtitle: products[i].price!=null?products[i].price:""),
+          // getDetails(title: price,subtitle: products[i].price!=null?products[i].price:""),
           getDetails(title: packageSize,subtitle: products[i].packageSize),
         ],
       ));
@@ -332,7 +349,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
         getDetails(title: first_name, subtitle:order.receiverFirstName),
         getDetails(title: last_name, subtitle: order.receiverLastName),
         getDetails(title: phone_number, subtitle:order.receiverMobile),
-        getDetails(title: pickUpLocation, subtitle: order.receiverAddress),
+        getDetails(title: email,subtitle: order.receiverEmail),
+        getDetails(title: deliveryLocation, subtitle: order.receiverAddress),
         getDetails(
             title: deliveryInstruction,
             subtitle:order.receiverInstruction/*order.receiverInstruction != null
@@ -342,17 +360,17 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
             title: womanDelivery,
             isIcon: true,
             iconData:order.iswomen == 1 ? Icons.done : Icons.clear,
-            color: order.iswomen == 1?blackColor:textColor),
-        getDetails(
+            color: order.iswomen == 1?buttonColor:textColor),
+      /*  getDetails(
             title: receiverTrack,
             isIcon: true,
             iconData: order.istrack == 1 ? Icons.done : Icons.clear,
-            color: order.iswomen == 1?blackColor:textColor),
+            color: order.iswomen == 1?blackColor:textColor),*/
         getDetails(
             title: giftOption,
             isIcon: true,
             iconData: order.giftOption == 1 ? Icons.done : Icons.clear,
-            color: order.iswomen == 1?blackColor:textColor),
+            color: order.giftOption == 1?buttonColor:textColor),
       ],
     );
   }
@@ -383,20 +401,18 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
   }
 
   void startTracking() {
-    callStartPickupApi(order.sId,order.status);
+    callStartPickupApi(order.sId,order.is_pickup_complted);
     Navigator.push(
         context, CupertinoPageRoute(
-        builder: (context) => MapScreen(receiverLatitude: order.status>=2 && order.pickUpTime.isNotEmpty?order.receiverLatitude:order.pickupLatitude,
-          receiverLongitude: order.status>=2 && order.pickUpTime.isNotEmpty?order.receiverLongitude:order.pickupLongitude,id: order.sId,isForDeliery: order.status>=2 && order.pickUpTime.isNotEmpty?true:false,isAfterPickUp: false,
-          mobileNum: order.status>=2 && order.pickUpTime.isNotEmpty?order.receiverMobile:order.mobile,)));
+        builder: (context) => MapScreen(receiverLatitude: order.status>=2 && order.is_pickup_complted==1?order.receiverLatitude:order.pickupLatitude,
+          receiverLongitude: order.status>=2 && order.is_pickup_complted==1?order.receiverLongitude:order.pickupLongitude,id: order.sId,isForDeliery: order.status>=2 && order.is_pickup_complted==1?true:false,isAfterPickUp: false,
+          mobileNum: order.status>=2 && order.is_pickup_complted==1?order.receiverMobile:order.mobile,)));
   }
 
-  void callStartPickupApi(String sId, int status) {
+  void callStartPickupApi(String sId, int isPickUpCompleted) {
     Map<String,dynamic> param = Map();
     param["order_id"] = sId;
-    if(status==2 || status==3){
-      NetworkCall().callPostApi(param, ApiConstants.startDelivery);
-    }else if(status ==0 || status ==1){
+    if(isPickUpCompleted !=1){
       NetworkCall().callPostApi(param, ApiConstants.startPickUp);
     }
   }

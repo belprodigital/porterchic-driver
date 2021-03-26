@@ -40,7 +40,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   FocusNode _lastNameFocusNode = FocusNode();
   FocusNode _emailFocusNode = FocusNode();
   FocusNode _phoneNumberFocusNode = FocusNode();
-  String errorPasswordText = "This is required field";
+  String errorPasswordText = requireField;
   bool isFirstNameErrorShow = false;
   bool isLastNameErrorShow = false;
   File croppedFile;
@@ -268,7 +268,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             visible: showLoader,
             child: Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                valueColor: AlwaysStoppedAnimation<Color>(buttonColor),
               ),
             ),
           )
@@ -345,17 +345,20 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               CupertinoActionSheetAction(
                   onPressed: () async{
                     Navigator.pop(context);
-                    if(await Permission.camera.status == PermissionStatus.granted){
+                    if (await Permission.camera.status ==
+                        PermissionStatus.granted) {
                       selectedProfilePicFromCamera(context);
-                    }else{
-                      if(await Permission.camera.isPermanentlyDenied){
-                        openAppSettings();
-                      }else{
+                    } else {
+                      if (await Permission.camera.isUndetermined) {
                         Permission.camera.request().then((value) {
-                          if(value.isGranted){
+                          print("status $value");
+                          if (value.isGranted) {
                             selectedProfilePicFromCamera(context);
                           }
                         });
+                      } else {
+                        showPermissionDialog(true);
+
                       }
                     }
                   },
@@ -370,17 +373,19 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               CupertinoActionSheetAction(
                   onPressed: () async{
                     Navigator.of(context).pop();
-                    if(await Permission.storage.status == PermissionStatus.granted){
+                    if (await Permission.photos.status ==
+                        PermissionStatus.granted) {
                       selectedProfilePicFromGallary(context);
-                    }else{
-                      if(await Permission.storage.isPermanentlyDenied){
-                        openAppSettings();
-                      }else{
-                        Permission.storage.request().then((value) {
-                          if(value.isGranted){
+                    } else {
+                      if (await Permission.photos.isUndetermined) {
+                        Permission.photos.request().then((value) {
+                          print("status $value");
+                          if (value.isGranted) {
                             selectedProfilePicFromGallary(context);
                           }
                         });
+                      } else {
+                        showPermissionDialog(false);
                       }
                     }
 
@@ -405,6 +410,54 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             ),
           );
         });
+  }
+
+  showPermissionDialog(bool isFromCamera){
+    var alertDialog = AlertDialog(
+      title: CustomtextFields.textFields(
+          text: "PorterChic",
+          fontWeight: FontWeight.w600,
+          fontSize: 22.0,
+          textColor: blackColor
+      ),
+      content: CustomtextFields.textFields(
+          text: "You denied permission for ${isFromCamera?"camera":"gallery"}, please give permission from setting to access it.",
+          fontWeight: FontWeight.w400,
+          fontSize: 16.0,
+          maxLines: 4,
+          textColor: blackColor
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: CustomtextFields.textFields(
+              text: "Okay",
+              fontWeight: FontWeight.w500,
+              fontSize: 19.0,
+              textColor: blackColor
+          ),
+          onPressed: (){
+            openAppSettings();
+            Navigator.pop(context);
+          },
+        ),
+        FlatButton(
+          child: CustomtextFields.textFields(
+              text: "Cancel",
+              fontWeight: FontWeight.w500,
+              fontSize: 19.0,
+              textColor: blackColor
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+    showDialog(
+        context: context,
+        builder:(context)=>alertDialog,
+        barrierDismissible: false
+    );
   }
 
   Future selectedProfilePicFromGallary(BuildContext context) async{

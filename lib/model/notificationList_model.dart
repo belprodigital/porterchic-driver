@@ -76,6 +76,7 @@ class Unread {
   String date;
   String orderId;
   int read;
+  int status;
 
   Unread(
       {this.totalLength,
@@ -84,7 +85,9 @@ class Unread {
         this.message,
         this.date,
         this.orderId,
-        this.read});
+        this.read,
+        this.status,
+      });
 
   Unread.fromJson(Map<String, dynamic> json) {
     totalLength = json['total_length'];
@@ -94,6 +97,7 @@ class Unread {
     date = json['date'];
     orderId = json['order_id'];
     read = json['read'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +109,7 @@ class Unread {
     data['date'] = this.date;
     data['order_id'] = this.orderId;
     data['read'] = this.read;
+    data['status'] = this.status;
     return data;
   }
 }

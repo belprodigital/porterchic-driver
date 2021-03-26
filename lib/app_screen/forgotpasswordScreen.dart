@@ -30,7 +30,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   bool isButtonEnable = false;
   var showLoader = false;
   bool isPhoneErrorShow = false;
-  String errorPhoneText = "This is required field";
+  String errorPhoneText = requireField;
   Country selectedCountry = Country.AE;
   final GlobalKey<ScaffoldState> globalKey = GlobalKey();
 
@@ -246,7 +246,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     String phNo = _phoneNumberController.text.trim();
     if(phNo.isEmpty){
       setState(() {
-        errorPhoneText = "This is required field";
+        errorPhoneText = requireField;
         isPhoneErrorShow = true;
         _phoneFocusNode.hasFocus;
 

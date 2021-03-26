@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:docusign_sdk/docusign_sdk.dart';
-import 'package:docusign_sdk/model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +16,6 @@ import 'package:porterchic_driver/styles/colors.dart';
 import 'package:porterchic_driver/styles/customButtons.dart';
 import 'package:porterchic_driver/styles/customTextFields.dart';
 import 'package:porterchic_driver/styles/strings.dart';
-import 'package:porterchic_driver/utils/myprint.dart';
-import 'package:http/http.dart' as http;
 
 class SignatureScreen extends StatefulWidget {
 
@@ -208,9 +204,9 @@ class _SignatureScreenState extends State<SignatureScreen> {
     signatureParam["image"] = base64Encode(imgeData.buffer.asUint8List());
     // print(signatureParam["image"]);
     Response signatureResponse = await NetworkCall().callPostApi(signatureParam, ApiConstants.driverUploadSignature);
-    /* Map<String,dynamic> pickUpParam = Map();
+     Map<String,dynamic> pickUpParam = Map();
     pickUpParam["order_id"]=widget.orderId;
-    Response pickUpResponse = await NetworkCall().callPostApi(pickUpParam, widget.isFromDelivery?ApiConstants.deliveryCompleted:ApiConstants.pickUpCompleted);*/
+    Response pickUpResponse = await NetworkCall().callPostApi(pickUpParam, widget.isFromDelivery?ApiConstants.deliveryCompleted:ApiConstants.pickUpCompleted);
     setState(() {
       showLoader = false;
     });

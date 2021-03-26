@@ -54,7 +54,6 @@ class NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
         backgroundColor: white_color,
-        resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
           elevation: 0.0,

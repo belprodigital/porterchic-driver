@@ -86,10 +86,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
                          ),
                          GestureDetector(
                            onTap: () async{
-                             if(await canLaunch(launchWhatsApp(phone: "971555262865"))){
-                               await launch(launchWhatsApp(phone: "971555262865"));
+                             if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
+                               await launch(launchWhatsApp(phone: whatsAppNum));
                              }else{
-                               Fluttertoast.showToast(msg: "Please install WhatsApp application.");
+                               Fluttertoast.showToast(msg: msg_install_whatsapp);
                              }
 //                         _navigateToLoginScreen();
                            },

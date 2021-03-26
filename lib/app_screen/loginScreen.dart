@@ -38,8 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordShow = true;
   bool isPhoneErrorShow = false;
   bool isPassErrorShow = false;
-  String errorPhoneText = "This is required field";
-  String errorPassText = "This is required field";
+  String errorPhoneText = requireField;
+  String errorPassText = requireField;
   String deviceToken;
   var firebaseMessaging = FirebaseMessaging();
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
@@ -340,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isValid() {
     if(_phoneNumberController.text.trim().isEmpty){
       setState(() {
-          errorPhoneText = "This is required field";
+          errorPhoneText = requireField;
           isPhoneErrorShow = true;
           _phoneFocusNode.hasFocus;
 
