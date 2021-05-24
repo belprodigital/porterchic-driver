@@ -42,3 +42,4 @@ const Color redColor = const Color(0XFFFF5154);
 const Color mapCardBgColor = const Color(0XFFEBEEF2);
 const Color dateBgColor = const Color(0XFFE8F0FB);
 const Color starColor = const Color(0XFFF3C626);
+//const Color starColor =  Color.;
