@@ -249,8 +249,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         sharedPref.setBool(ApiConstants.feedBack,data["data"]["new_feedback"]==1?true:false);
         if(data["data"]["status"]==2){
           sharedPref.clear();
-          Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>PreviewScreen()), (route) => false);
-          Fluttertoast.showToast(msg: "Your account is deactivate by admin. Please contact support team");
+          Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (context) => PreviewScreen()),
+              (route) => false);
+          Fluttertoast.showToast(
+              msg:
+                  "Your account is deactivated by admin. Please contact support team");
         }
       });
     }

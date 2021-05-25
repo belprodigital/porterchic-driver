@@ -239,29 +239,46 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
                               Container(
                                 height: MediaQuery.of(context).size.height/2,
                                 child: Center(
-                                  child: CustomtextFields.textFields(
-                                      text:"No items were found",
-                                      textColor: blackColor,
-                                      fontSize: 16.0,
-                                      fontFamily: "Mada",
-                                      fontWeight: FontWeight.w400
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ):Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height:20.0,
-                              ),
-                              DividerContainer.divider(
-                                text: "UPCOMING",
-                                textColor:textColor,
-                                fontSize:14.0,
-                                context: context,
-                                dividerColor: divider_Color,
-                              ),
-                              Center(
+                                                  child: CustomtextFields
+                                                      .textFields(
+                                                          text:
+                                                              "No items were found",
+                                                          textColor: blackColor,
+                                                          fontSize: 16.0,
+                                                          fontFamily: "Mada",
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Column(
+                                            children: <Widget>[
+                                              SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              DividerContainer.divider(
+                                                text: "UPCOMING",
+                                                textColor: textColor,
+                                                fontSize: 14.0,
+                                                context: context,
+                                                dividerColor: divider_Color,
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    top: 20.0, bottom: 24.0),
+                                                width: 180,
+                                                height: 180,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          ImageAssests
+                                                              .upcomingImage),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              /*Center(
                                 child: Container(
                                   margin: EdgeInsets.only(top: 20.0,bottom: 24.0),
                                   height: 180.0,
@@ -272,8 +289,8 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
                                   ),
                                   child: Container(),
                                 ),
-                              ),
-                              CustomtextFields.textFields(
+                              ),*/
+                                              CustomtextFields.textFields(
                                   fontSize: 28.0,
                                   text: "You are super superhero",
                                   textColor: blackColor,
@@ -629,8 +646,13 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
         sharedPref.setBool(ApiConstants.feedBack,data["data"]["new_feedback"]==1?true:false);
         if(data["data"]["status"]==2){
           sharedPref.clear();
-          Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (context)=>PreviewScreen()), (route) => false);
-          Fluttertoast.showToast(msg: "Your account is deactivate by admin. Please contact support team");
+          Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (context) => PreviewScreen()),
+              (route) => false);
+          Fluttertoast.showToast(
+              msg:
+                  "Your account is deactivated by admin. Please contact support team");
         }
       });
     }

@@ -83,5 +83,5 @@ class ImageAssests{
   static String feedBackNoti = 'images/feedBackNoti.png';
   static String spalshLogoWhite = 'images/spalshLogoWhite.json';
   static String splashLogoBlue = 'images/splashLogoBlue.json';
-
+  static String upcomingImage = 'images/upcoming_image.png';
 }
