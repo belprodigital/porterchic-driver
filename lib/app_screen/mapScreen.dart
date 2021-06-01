@@ -632,19 +632,25 @@ class MapScreenState extends State<MapScreen> {
             geodesic: true,
             points: polylineCoordinates,
           );
-          if(_polylines!=null){
+          if (_polylines != null) {
             _polylines.clear();
           }
           _polylines.add(polyline);
-          isDeliveryStart=true;
+          isDeliveryStart = true;
           int arrivalSec = legs[0].duration.value;
-          double hours = arrivalSec/3600;
-          int hour=hours.round();
-          double minutes = arrivalSec/60;
+          double hours = arrivalSec / 3600;
+          int hour = hours.round();
+          print("the hours is $hour");
+          //double minutes = arrivalSec/60;
+          double minutes = arrivalSec % 3600 / 60;
+          print("the minutes is $minutes");
           int minute = minutes.round();
-          String suffixArrivalText=legs[0].distance.value>1000?legs[0].distance.text:legs[0].distance.value.toString()+" m";
-          String preffixArrivalText;
-          if(hour>0){
+
+          String suffixArrivalText = legs[0].distance.value > 1000
+              ? legs[0].distance.text
+              : legs[0].distance.value.toString() + " m";
+          String preffixArrivalText = legs[0].duration.text;
+          /*if(hour>0){
             if(hour>1){
               if(minute>0){
                 preffixArrivalText = hour.toString()+" hours "+minute.toString()+" minutes";
@@ -660,7 +666,7 @@ class MapScreenState extends State<MapScreen> {
             }
           }else{
             preffixArrivalText = minute.toString()+" minutes";
-          }
+          }*/
           arrivalText = "Arrival in "+preffixArrivalText+" ("+suffixArrivalText+")";
           if(legs[0].steps.length==1){
             if(legs[0].distance.value<10){

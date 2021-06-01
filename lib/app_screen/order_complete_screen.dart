@@ -32,32 +32,39 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
           body: Container(
             margin: EdgeInsets.only(left: 20.0,right: 20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
              children: <Widget>[
-               Center(
-                 child: Container(
-                   margin: EdgeInsets.only(top: 20.0,bottom: 24.0),
-                   height: 190.0,
-                   width: 190.0,
-                   decoration: BoxDecoration(
-                     shape: BoxShape.circle,
-                     color: divider_Color.withOpacity(0.2),
-                   ),
-                   child: Container(),
-                 ),
-               ),
-               CustomtextFields.textFields(
-                   fontSize: 28.0,
-                   text: widget.isFromDelivery?deliveryCompleted:pickupCompleted,
-                   textColor: blackColor,
-                   fontWeight: FontWeight.w700,
-                   textAlign: TextAlign.center,
-                   maxLines: 2
-               ),
-               SizedBox(
-                 height: 24.0,
-               ),
-               /*CustomtextFields.textFields(
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20.0, bottom: 24.0),
+                          height: 190.0,
+                          width: 190.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: divider_Color.withOpacity(0.2),
+                          ),
+                          child: Container(),
+                        ),
+                      ),
+                      CustomtextFields.textFields(
+                          fontSize: 28.0,
+                          text: widget.isFromDelivery
+                              ? deliveryCompleted
+                              : pickupCompleted,
+                          textColor: blackColor,
+                          fontWeight: FontWeight.w700,
+                          textAlign: TextAlign.center,
+                          maxLines: 2),
+                      SizedBox(
+                        height: 24.0,
+                      ),
+                    ],
+                  ),
+                ),
+                /*CustomtextFields.textFields(
                    fontSize: 16.0,
                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                    textColor: textColor,
@@ -73,13 +80,13 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
                    fontSize: 16.0,
                    text: widget.isFromDelivery?finish:startDelivery,
                    textColor: white_color,
-                   function: (){
-                      if(widget.isFromDelivery){
+                   function: () {
+                      if (widget.isFromDelivery) {
                         navigateToHomeScreen();
-                      }else{
+                      } else {
                         navigateToMapScreen();
                       }
-                   },
+                    },
                    radiusSize: 0.0
                ),
                Visibility(
@@ -91,23 +98,23 @@ class _OrderCompleteScreenState extends State<OrderCompleteScreen> {
                      ),
                      GestureDetector(
                        onTap: (){
-                        navigateToHomeScreen();
-                       },
+                         navigateToHomeScreen();
+                        },
                        child: CustomtextFields.textFields(
                          fontSize: 16.0,
                          text: "Home",
-                         textColor: blackColor,
-                         fontWeight: FontWeight.w700,
-                         textAlign: TextAlign.center,
-                       ),
-                     ),
-                   ],
-                 ),
-               ),
-               SizedBox(
-                 height: 30.0,
-               ),
-             ],
+                          textColor: blackColor,
+                          fontWeight: FontWeight.w700,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                )
+              ],
             ),
           ),
         ),
