@@ -317,6 +317,8 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
           getTitle(title: orderInfo.toUpperCase()+" #"+(i+1).toString()),
           getDetails(title: orderIDLabel,subtitle: order.sId),
           getDetails(title: productType,subtitle: products[i].productType),
+          getDetails(title: quantityLabel,subtitle: products[i].qty.toString()),
+          getDetails(title: descriptionLabel,subtitle: products[i].description),
           // getDetails(title: price,subtitle: products[i].price!=null?products[i].price:""),
           getDetails(title: packageSize,subtitle: products[i].packageSize),
         ],

@@ -43,7 +43,7 @@ class _PorterChicDriverState extends State<PorterChicDriver> {
   @override
   void initState() {
     splashWidget = splashScreenWidget();
-    Future.delayed(Duration(seconds: 5),(){
+    Future.delayed(Duration(seconds: 3),(){
       setState(() {
         splashWidget = getLoginredirection(isShowintro,isLogin);
       });
@@ -106,7 +106,7 @@ class _PorterChicDriverState extends State<PorterChicDriver> {
   Widget splashScreenWidget() {
     return Center(
       child: Container(
-        child: Lottie.asset(ImageAssests.splashLogoBlue,repeat: false,onLoaded: (composition){
+        child: Lottie.asset(ImageAssests.splashLogoBlack,repeat: false,onLoaded: (composition){
 
         },
         ),

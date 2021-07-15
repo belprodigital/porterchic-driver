@@ -2,7 +2,8 @@
 class ApiConstants {
 
   //Api
-  static String base_url="https://admin.porterchic.com:8443/driver/";   //live url
+  //static String base_url="https://admin.porterchic.com:8443/driver/";   //live url
+  static String base_url="https://api.porterchic.com/driver/";   //live url
   // static String base_url="http://4085ea3ca379.ngrok.io/driver/"; //base url
 
   static String otpVerify="otp-verify";

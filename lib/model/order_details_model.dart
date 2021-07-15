@@ -244,6 +244,8 @@ class Products {
   String sId;
   String orderId;
   String productType;
+  int qty;
+  String description;
   String packageSize;
   String productImage;
   String packageImage;
@@ -256,6 +258,8 @@ class Products {
       {this.sId,
         this.orderId,
         this.productType,
+        this.qty,
+        this.description,
         this.packageSize,
         this.productImage,
         this.packageImage,
@@ -268,6 +272,8 @@ class Products {
     sId = json['_id'];
     orderId = json['order_id'];
     productType = json['product_type'];
+    qty = json['qty'];
+    description = json['description'];
     packageSize = json['package_size'];
     productImage = json['product_image'];
     packageImage = json['package_image'];
@@ -282,6 +288,8 @@ class Products {
     data['_id'] = this.sId;
     data['order_id'] = this.orderId;
     data['product_type'] = this.productType;
+    data['qty'] = this.qty;
+    data['description'] = this.description;
     data['package_size'] = this.packageSize;
     data['product_image'] = this.productImage;
     data['package_image'] = this.packageImage;
