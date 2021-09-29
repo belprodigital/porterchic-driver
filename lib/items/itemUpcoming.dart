@@ -206,12 +206,22 @@ class _ItemUpcomingState extends State<ItemUpcoming> {
                      Expanded(
                        child: RaisedButton(
                            onPressed:(){
-                             callStartPickupApi(widget.activeOrderList.sId,widget.activeOrderList.isPickupComplted);
+                             callStartPickupApi(
+                              widget.activeOrderList.sId,
+                              widget.activeOrderList.isPickupComplted
+                            );
                              Navigator.push(
-                                 context, CupertinoPageRoute(
-                                 builder: (context) => MapScreen(receiverLatitude: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverLatitude:widget.activeOrderList.pickupLatitude,
-                                 receiverLongitude: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverLongitude:widget.activeOrderList.pickupLongitude,id: widget.activeOrderList.sId,isForDeliery: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?true:false,isAfterPickUp: false,
-                                   mobileNum: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverMobile:widget.activeOrderList.pickUpMobile,)));
+                                context, CupertinoPageRoute(
+                                builder: (context) => MapScreen(
+                                    receiverLatitude: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverLatitude:widget.activeOrderList.pickupLatitude,
+                                    receiverLongitude: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverLongitude:widget.activeOrderList.pickupLongitude,
+                                    id: widget.activeOrderList.sId,
+                                    isForDeliery: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?true:false,
+                                    isAfterPickUp: false,
+                                    mobileNum: widget.activeOrderList.status>=2 && widget.activeOrderList.isPickupComplted==1?widget.activeOrderList.receiverMobile:widget.activeOrderList.pickUpMobile,
+                                  )
+                                )
+                              );
                            },
                            elevation: 0.0,
                            padding: EdgeInsets.only(top: 13.0,bottom: 13.0),
@@ -253,4 +263,6 @@ class _ItemUpcomingState extends State<ItemUpcoming> {
       NetworkCall().callPostApi(param, ApiConstants.startPickUp);
     }
   }
+
+
 }

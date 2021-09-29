@@ -26,6 +26,7 @@ class ImageAssests{
   static String threeDot = "images/three_Dots.png";
   static String call = "images/call.png";
   static String setLocation = "images/setLocation.png";
+  static String setLocationBlack = "images/setLocationBlack.png";
   static String turnLeft = "images/turnLeft.png";
   static String turnRightGrey = "images/turnRightGrey.png";
   static String packageBlue = "images/packageBlue.png";
@@ -85,4 +86,5 @@ class ImageAssests{
   static String splashLogoBlue = 'images/splashLogoBlue.json';
   static String splashLogoBlack = 'images/splashLogoBlack.json';
   static String upcomingImage = 'images/upcoming_image.png';
+  static String googleMapImage = 'images/google_map.png';
 }

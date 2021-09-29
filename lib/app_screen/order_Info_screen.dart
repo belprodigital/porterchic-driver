@@ -108,15 +108,18 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
               image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
           )),
-          errorWidget: (context, value, obj) => Container(
+          errorWidget: (context, value, obj) => 
+            Container(
               height: 180.0,
               width: 180.0,
               decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  border: Border.all(color: text_color, width: 1.0),
-                  borderRadius: BorderRadius.circular(4.0)),
-              child: Center(child: Image.asset(ImageAssests.watch))),
-          placeholder: (context, url) => Container(
+                shape: BoxShape.rectangle,
+                border: Border.all(color: text_color, width: 1.0),
+                borderRadius: BorderRadius.circular(4.0)
+              ),
+              child: Center(child: Image.asset(ImageAssests.watch))
+            ),
+            placeholder: (context, url) => Container(
             height: 180.0,
             width: 180.0,
             decoration: BoxDecoration(
@@ -165,24 +168,40 @@ class _OrderInfoScreenState extends State<OrderInfoScreen> {
                                       margin: EdgeInsets.only(right: 5.0,left: 5.0),
                                       child: GestureDetector(
                                           onTap:(){
-                                            Navigator.push(context,
-                                                CupertinoPageRoute(builder: (context) => ImagePreviewScreen(imgUrl:products[index].productImage,isFromNetwork: true,)));
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) => 
+                                                    ImagePreviewScreen(
+                                                      imgUrl:products[index].productImage,
+                                                      isFromNetwork: true,
+                                                    )
+                                                )
+                                            );
                                           },
                                           child: getPhotosCard(imagePath: products[index].productImage)
                                       )
                                   ),
+                                  products[index].packageImage != null ?
                                   Container(
                                       width:(MediaQuery.of(context).size.width-60)/2,
                                       height: (MediaQuery.of(context).size.width-60)/2,
                                       margin: EdgeInsets.only(left: 5.0,right: 5.0),
                                       child: GestureDetector(
                                           onTap:(){
-                                            Navigator.push(context,
-                                                CupertinoPageRoute(builder: (context) => ImagePreviewScreen(imgUrl:products[index].packageImage,isFromNetwork: true,)));
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) => ImagePreviewScreen(
+                                                    imgUrl:products[index].packageImage,
+                                                    isFromNetwork: true,
+                                                  )
+                                              )
+                                            );
                                            },
                                           child: getPhotosCard(imagePath: products[index].packageImage)
                                       )
-                                  ),
+                                  ) : Container(),
                                 ],
                               );
                             },

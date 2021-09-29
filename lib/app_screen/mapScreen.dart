@@ -32,6 +32,7 @@ import 'package:http/http.dart' as http;
 import 'package:wakelock/wakelock.dart';
 //import 'package:workmanager/workmanager.dart';
 import 'homeScreen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /*
 const fetchBackground = "fetchBackground";
@@ -151,18 +152,18 @@ class MapScreenState extends State<MapScreen> {
                     mapType: MapType.normal,
                     initialCameraPosition: _kGooglePlex,
                     onTap: (value){
-//                updateLocation(value);
+                      //updateLocation(value);
                     },
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
                     },
                     polylines: _polylines,
                     markers: _markers,
-                    zoomControlsEnabled:true,
+                    zoomControlsEnabled:false,
                     zoomGesturesEnabled:true,
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 54.0),
+                    margin: EdgeInsets.only(bottom: 15.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,7 +198,7 @@ class MapScreenState extends State<MapScreen> {
                                     margin: EdgeInsets.only(left: 10.0),
                                     child: CustomtextFields.textFields(
                                       text: arrivalText,
-                                      fontSize: 24.0,
+                                      fontSize: 20.0,
                                       fontWeight: FontWeight.w700,
                                       maxLines: 2,
                                       textColor: isDeliveryComplete?white_color:blackColor
@@ -211,26 +212,45 @@ class MapScreenState extends State<MapScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            /*GestureDetector(
+                            GestureDetector(
+                              onTap: () async{
+                                if( await canLaunch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude)) ){
+                                  await launch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude));
+                                }else{
+                                  Fluttertoast.showToast(msg: "Please install map application");
+                                }
+                              },
+                              child: Visibility(
+                                visible: true,
+                                child: Container(
+                                    margin: EdgeInsets.only(bottom: 10.0,left: 20.0,right: 20.0),
+                                    child: Image.asset(ImageAssests.googleMapImage,height: 52.0,width: 52.0,)
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
                               onTap: (){
                                 getPermission();
                               },
                               child: Visibility(
-                                visible: !isCurrentLocation,
+                                visible: true,
                                 child: Container(
-                                    margin: EdgeInsets.only(bottom: 15.0,left: 20.0,right: 20.0),
-                                    child: Image.asset(ImageAssests.setLocation,height: 52.0,width: 52.0,)),
+                                    margin: EdgeInsets.only(bottom: 10.0,left: 20.0,right: 20.0),
+                                    child: Image.asset(ImageAssests.setLocationBlack,height: 52.0,width: 52.0,)
+                                ),
                               ),
-                            ),*/
+                            ),
                             GestureDetector(
                               onTap: ()=>launch("tel://"+widget.mobileNum),
                               child: Container(
-                                  margin: EdgeInsets.only(bottom: 15.0,left: 20.0,right: 20.0),
-                                  child: Image.asset(ImageAssests.call,height: 52.0,width: 52.0,)),
+                                  margin: EdgeInsets.only(bottom: 10.0,left: 20.0,right: 20.0),
+                                  child: Image.asset(ImageAssests.call,height: 52.0,width: 52.0,)
+                                ),
                             ),
                             Visibility(
                               visible: isDeliveryStart,
-                                child: getDirectionCard(white_color,24.0,blackColor,ImageAssests.turnLeft,52.0,directionText,20.0)),
+                              child: getDirectionCard(white_color,24.0,blackColor,ImageAssests.turnLeft,52.0,directionText,20.0)
+                            ),
                             /*Visibility(
                               visible: isDeliveryStart  ,
                                 child: getDirectionCard(mapCardBgColor,24.0,black_color,ImageAssests.turnRightGrey,16.0,directionText,20.0)),*/
@@ -258,20 +278,6 @@ class MapScreenState extends State<MapScreen> {
                                 ),
                               ),
                             )
-
-                           /* Container(
-                              margin: EdgeInsets.only(left: 20.0,right: 20.0),
-                              decoration: BoxDecoration(
-                                  color: white_color
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  getDirectionCard(white_color,24.0,blackColor,ImageAssests.turnLeft,52.0),
-                                  getDirectionCard(mapCardBgColor,16.0,black_color,ImageAssests.turnRightGrey,16.0),
-                                ],
-                              ),
-                            ),*/
-//                          getPickupCard(),
                           ],
                         )
                       ],
@@ -591,15 +597,15 @@ class MapScreenState extends State<MapScreen> {
       DirectionModel directionModel = DirectionModel.fromJson(data);
       if(directionModel.routes.length>0){
 
-        print("the latitufe is $latitude");
-        print("the latitufe is $longitude");
-        print("the latitufe is $receiverLatitude");
-        print("the latitufe is $receiverLongitude");
+        // print("the latitufe is $latitude");
+        // print("the latitufe is $longitude");
+        // print("the latitufe is $receiverLatitude");
+        // print("the latitufe is $receiverLongitude");
 
         double bearing = await Geolocator().bearingBetween(latitude,longitude,
             directionModel.routes[0].legs[0].steps[0].endLocation.lat,
             directionModel.routes[0].legs[0].steps[0].endLocation.lng);
-        print("the bearing value is $bearing");
+        //print("the bearing value is $bearing");
 
         setState(() {
           _markers.add(
@@ -640,10 +646,12 @@ class MapScreenState extends State<MapScreen> {
           int arrivalSec = legs[0].duration.value;
           double hours = arrivalSec / 3600;
           int hour = hours.round();
-          print("the hours is $hour");
+          //print("the hours is $hour");
           //double minutes = arrivalSec/60;
           double minutes = arrivalSec % 3600 / 60;
-          print("the minutes is $minutes");
+
+          //print("the minutes is $minutes");
+
           int minute = minutes.round();
 
           String suffixArrivalText = legs[0].distance.value > 1000
@@ -734,11 +742,10 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future getLocationUpdate() async {
-
       LatLng latLng;
       location.changeSettings(interval: 2000);
       location.onLocationChanged.listen((latLong) async {
-        print("the heading value is ${latLong.heading}");
+        //print("the heading value is ${latLong.heading}");
         if(!mounted){
           return;
         }
@@ -770,6 +777,16 @@ class MapScreenState extends State<MapScreen> {
 
         });
     }
+
+  String launchGoogleMap({@required String lat, @required String long}) {
+    try{
+      String destination = lat + "," + long;
+      return "https://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving&dir_action=navigate";
+    }
+    catch(e){
+      print("error ${e.toString()}");
+    }
+  }
 
 @override
   void dispose() {
