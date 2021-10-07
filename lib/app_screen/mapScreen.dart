@@ -781,7 +781,7 @@ class MapScreenState extends State<MapScreen> {
   String launchGoogleMap({@required String lat, @required String long}) {
     try{
       String destination = lat + "," + long;
-      String googleUrl = "comgooglemapsurl://maps.google.com/maps?f=d&daddr="+destination+"&nav=1&x-source=SourceApp&x-success=sourceapp://?resume=true";
+      String googleUrl = "comgooglemapsurl://maps.google.com/maps?f=d&daddr="+destination+"&nav=1&x-source=PorterChic&x-success=customscheme://porterchicdriver.com?resume=true";
       return googleUrl;
     }
     catch(e){

@@ -20,6 +20,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleURLName</key>
+	<string>porterchicdriver.com</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+	<string>customscheme</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechromes</string>
