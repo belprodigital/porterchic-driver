@@ -214,7 +214,7 @@ class MapScreenState extends State<MapScreen> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async{
-                                if( await canLaunch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude)) ){
+                                if( await canLaunch("comgooglemaps://") ){
                                   await launch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude));
                                 }else{
                                   Fluttertoast.showToast(msg: "Please install google map application");
