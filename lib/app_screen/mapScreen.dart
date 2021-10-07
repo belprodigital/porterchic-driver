@@ -217,7 +217,7 @@ class MapScreenState extends State<MapScreen> {
                                 if( await canLaunch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude)) ){
                                   await launch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude));
                                 }else{
-                                  Fluttertoast.showToast(msg: "Please install map application");
+                                  Fluttertoast.showToast(msg: "Please install google map application");
                                 }
                               },
                               child: Visibility(
@@ -780,11 +780,12 @@ class MapScreenState extends State<MapScreen> {
 
   String launchGoogleMap({@required String lat, @required String long}) {
     try{
-      String destination = lat + "," + long;
-      return "https://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving&dir_action=navigate";
+      String googleUrl = 'comgooglemaps://?center=$lat,$long';
+      return googleUrl;
     }
     catch(e){
       print("error ${e.toString()}");
+      return "false";
     }
   }
 
