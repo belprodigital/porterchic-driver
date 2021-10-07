@@ -780,11 +780,12 @@ class MapScreenState extends State<MapScreen> {
 
   String launchGoogleMap({@required String lat, @required String long}) {
     try{
-      // String googleUrl = 'comgooglemaps://?center=$lat,$long';
-      // return googleUrl;
-
       String destination = lat + "," + long;
-      return "https://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving&dir_action=navigate";
+      String googleUrl = "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving&dir_action=navigate";
+      return googleUrl;
+      
+      // String destination = lat + "," + long;
+      // return "https://www.google.com/maps/dir/?api=1&destination=" + destination + "&travelmode=driving&dir_action=navigate";
     }
     catch(e){
       print("error ${e.toString()}");
