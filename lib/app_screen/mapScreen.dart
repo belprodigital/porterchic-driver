@@ -30,27 +30,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:wakelock/wakelock.dart';
-//import 'package:workmanager/workmanager.dart';
 import 'homeScreen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-/*
-const fetchBackground = "fetchBackground";
-Position userLocation;
-
-void callbackDispatcher() {
-  Workmanager.executeTask((task, inputData) async {
-    switch (task) {
-      case fetchBackground:
-         Location().onLocationChanged.listen((latLng) {
-           userLocation = Position(latitude: latLng.latitude,longitude: latLng.longitude)
-        });
-        break;
-    }
-    return Future.value(true);
-  });
-}
-*/
 
 class MapScreen extends StatefulWidget {
   final String receiverLatitude;
@@ -59,53 +41,68 @@ class MapScreen extends StatefulWidget {
   final bool isForDeliery;
   final bool isAfterPickUp;
   final String mobileNum;
-  MapScreen({this.receiverLatitude,this.receiverLongitude,this.id,this.isForDeliery,this.isAfterPickUp,this.mobileNum});
+  MapScreen(
+    {
+      this.receiverLatitude,
+      this.receiverLongitude,
+      this.id,
+      this.isForDeliery,
+      this.isAfterPickUp,
+      this.mobileNum
+    }
+  );
 
   @override
-  MapScreenState createState() => MapScreenState(receiverLatitude: this.receiverLatitude,receiverLongitude: this.receiverLongitude);
+  MapScreenState createState() => MapScreenState(
+    receiverLatitude: this.receiverLatitude,
+    receiverLongitude: this.receiverLongitude
+  );
 }
 
 class MapScreenState extends State<MapScreen> {
-
+  
+  //GOOGLE MAP VARIABLES
   final String receiverLatitude;
   final String receiverLongitude;
-  String currentTimeZone="";
-
-
-  MapScreenState({this.receiverLatitude,this.receiverLongitude});
+  MapScreenState({
+    this.receiverLatitude,
+    this.receiverLongitude
+  });
   Completer<GoogleMapController> _controller = Completer();
   static double zooms=18.4746;
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(25.205081, 55.270666),
     zoom: 18.4746,
   );
-  Set<Marker> _markers = {
-
-  } ;
-  //37.788129 , -122.406755
-  var isBottomSheetOpen=false;
-  PersistentBottomSheetController _bottomSheetController;
+  Set<Marker> _markers = {}; //37.788129 , -122.406755
   static Location location = Location();
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-  BitmapDescriptor locationIcon;
-  BitmapDescriptor pickUpIconIcon;
+  LocationData locationData;
   Set<Polyline> _polylines = {};
   Polyline polyline;
-  List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
+  List<LatLng> polylineCoordinates = [];
+  StreamSubscription _locationSubscription;
+
+  String currentTimeZone="";
+  String directionText="";
+  String arrivalText="";
+  String image =  ImageAssests.turnLeft;
+  String grayImage = ImageAssests.turnLeft;
+
+  var isBottomSheetOpen=false;
   var isCurrentLocation=false;
   var isDeliveryStart=false;
   var isDeliveryComplete=false;
-  List<Legs> legs = List<Legs>();
-  String directionText="";
-  String arrivalText="";
   var stepCount=0;
   var locationCount = 0;
-  String image =  ImageAssests.turnLeft;
-  String grayImage = ImageAssests.turnLeft;
-  LocationData locationData;
-  Timer timer;
   static var position = Position();
+
+  PersistentBottomSheetController _bottomSheetController;
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  BitmapDescriptor locationIcon;
+  BitmapDescriptor pickUpIconIcon;
+  List<Legs> legs = List<Legs>();
+  Timer timer;
   SharedPreferences sharedPreferences;
 
   @override
@@ -151,9 +148,6 @@ class MapScreenState extends State<MapScreen> {
                     myLocationButtonEnabled:false,
                     mapType: MapType.normal,
                     initialCameraPosition: _kGooglePlex,
-                    onTap: (value){
-                      //updateLocation(value);
-                    },
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
                     },
@@ -455,20 +449,24 @@ class MapScreenState extends State<MapScreen> {
 
   Future<void> getCurrentLocation() async {
      try {
-
-       locationData = await location.getLocation();
-           GoogleMapController controller = await _controller.future;
-           if(widget.isForDeliery){
-        callStartDeliveryApi(locationData);
-           }
-           CameraPosition cameraPosition = CameraPosition(target: LatLng(
-        locationData.latitude,locationData.longitude,
-           ),
-            zoom: 16.00,
-           );
-           controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-           // print("position ${locationData.longitude}, ${locationData.latitude}");
-           updateCurrentMarker();
+      locationData = await location.getLocation();
+      
+      GoogleMapController controller = await _controller.future;
+        if(widget.isForDeliery){
+          callStartDeliveryApi(locationData);
+        }
+        
+        CameraPosition cameraPosition = CameraPosition(
+          target: LatLng(
+            locationData.latitude,
+            locationData.longitude,
+          ),
+          zoom: 16.00,
+        );
+        
+        controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+        // print("position ${locationData.longitude}, ${locationData.latitude}");
+        updateCurrentMarker();
      } on Exception catch (e) {
        myPrintTag("error in location ", e.toString());
      }
@@ -493,7 +491,10 @@ class MapScreenState extends State<MapScreen> {
           )
       );
     });
-    setPolyPoints(locationData.latitude,locationData.longitude);
+    setPolyPoints(
+      locationData.latitude,
+      locationData.longitude
+    );
   }
 
   Future<void> getPermission() async {
@@ -583,9 +584,20 @@ class MapScreenState extends State<MapScreen> {
 
   Future setLocationIcon() async{
     locationIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5,size: Size.fromHeight(10.0)),ImageAssests.direction,);
-    pickUpIconIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5,size: Size.fromHeight(10.0)),
-        widget.isForDeliery?ImageAssests.pickUpMapIcon:ImageAssests.deliveryLocationPin);
+      ImageConfiguration(
+        devicePixelRatio: 2.5,
+        size: Size.fromHeight(10.0)
+      ),
+      ImageAssests.direction,
+    );
+
+    pickUpIconIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(
+        devicePixelRatio: 2.5,
+        size: Size.fromHeight(10.0)
+      ),
+      widget.isForDeliery?ImageAssests.pickUpMapIcon:ImageAssests.deliveryLocationPin
+    );
   }
 
   Future setPolyPoints(double latitude, double longitude) async{
@@ -602,46 +614,60 @@ class MapScreenState extends State<MapScreen> {
         // print("the latitufe is $receiverLatitude");
         // print("the latitufe is $receiverLongitude");
 
-        double bearing = await Geolocator().bearingBetween(latitude,longitude,
-            directionModel.routes[0].legs[0].steps[0].endLocation.lat,
-            directionModel.routes[0].legs[0].steps[0].endLocation.lng);
+        double bearing = await Geolocator().bearingBetween(
+          latitude,
+          longitude,
+          directionModel.routes[0].legs[0].steps[0].endLocation.lat,
+          directionModel.routes[0].legs[0].steps[0].endLocation.lng
+        );
         //print("the bearing value is $bearing");
 
         setState(() {
           _markers.add(
-              Marker(
-                markerId: MarkerId("current_marker"),
-                position: LatLng(latitude,longitude),
-                  icon:locationIcon,
-                  rotation:bearing
-                 //rotation:latLong.heading
-              )
-                );
+            Marker(
+              markerId: MarkerId("current_marker"),
+              position: LatLng(latitude,longitude),
+              icon:locationIcon,
+              rotation:bearing,
+              anchor: Offset(0.5, 0.5),
+            )
+          );
         });
+
         if(legs!=null){
           legs.clear();
         }
+
         legs.addAll(directionModel.routes[0].legs);
+
         if(polylineCoordinates!=null){
           polylineCoordinates.clear();
         }
-        polylineCoordinates.addAll(CommonMethod.convertToLatLng(CommonMethod.decodePoly(directionModel.routes[0].overviewPolyline.points)));
+
+        polylineCoordinates.addAll(
+          CommonMethod.convertToLatLng(
+            CommonMethod.decodePoly(directionModel.routes[0].overviewPolyline.points)
+          )
+        );
 
         setState(() {
-
           if(!mounted){
             return;
           }
+
           polyline = Polyline(
             polylineId: PolylineId("poly"),
             color: Color.fromARGB(255, 40, 122, 198),
             geodesic: true,
             points: polylineCoordinates,
           );
+
           if (_polylines != null) {
             _polylines.clear();
           }
+
           _polylines.add(polyline);
+
           isDeliveryStart = true;
           int arrivalSec = legs[0].duration.value;
           double hours = arrivalSec / 3600;
@@ -649,15 +675,13 @@ class MapScreenState extends State<MapScreen> {
           //print("the hours is $hour");
           //double minutes = arrivalSec/60;
           double minutes = arrivalSec % 3600 / 60;
-
           //print("the minutes is $minutes");
-
           int minute = minutes.round();
-
           String suffixArrivalText = legs[0].distance.value > 1000
               ? legs[0].distance.text
               : legs[0].distance.value.toString() + " m";
           String preffixArrivalText = legs[0].duration.text;
+
           /*if(hour>0){
             if(hour>1){
               if(minute>0){
@@ -675,6 +699,7 @@ class MapScreenState extends State<MapScreen> {
           }else{
             preffixArrivalText = minute.toString()+" minutes";
           }*/
+
           arrivalText = "Arrival in "+preffixArrivalText+" ("+suffixArrivalText+")";
           if(legs[0].steps.length==1){
             if(legs[0].distance.value<10){
@@ -713,9 +738,9 @@ class MapScreenState extends State<MapScreen> {
         setState(() {
           _markers.add(
               Marker(
-                  markerId: MarkerId("current_marker"),
-                  position: LatLng(latitude,longitude),
-                  icon:locationIcon,
+                markerId: MarkerId("current_marker"),
+                position: LatLng(latitude,longitude),
+                icon:locationIcon,
                 //rotation:latLong.heading
               )
           );
@@ -742,40 +767,44 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future getLocationUpdate() async {
-      LatLng latLng;
-      location.changeSettings(interval: 2000);
-      location.onLocationChanged.listen((latLong) async {
-        //print("the heading value is ${latLong.heading}");
+      location.changeSettings(interval: 1000);
+      _locationSubscription=location.onLocationChanged.listen((latLong) async {
         if(!mounted){
           return;
         }
-       /* setState(() {
-          _markers.add(
-              Marker(
-                markerId: MarkerId("current_marker"),
-                position: LatLng(latLong.latitude,latLong.longitude),
-                  icon:locationIcon,
-                 rotation:bearing
-                 //rotation:latLong.heading
-              )
-                );
-        });*/
-        position = Position(latitude:latLong.latitude,longitude:latLong.longitude);
+        position = Position(
+          latitude:latLong.latitude,
+          longitude:latLong.longitude
+        );
       });
-        timer = Timer.periodic(Duration(
-            seconds: 2
-        ), (timer) async {
-            updateDriverLocation(position.latitude,position.longitude);
-            GoogleMapController controller = await _controller.future;
-            CameraPosition cameraPosition = CameraPosition(target: LatLng(
-              position.latitude,position.longitude,
-            ),
-              zoom: 16.00,
-            );
-            //controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-            setPolyPoints(position.latitude, position.longitude);
 
-        });
+      timer = Timer.periodic(Duration(
+        seconds: 2
+      ), 
+      (timer) async {
+        updateDriverLocation(
+          position.latitude,
+          position.longitude
+        );
+
+        GoogleMapController controller = await _controller.future;
+
+        CameraPosition cameraPosition = CameraPosition(
+          target: LatLng(
+            position.latitude,
+            position.longitude,
+          ),
+          zoom: 16.00,
+        );
+
+        controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+
+        setPolyPoints(
+          position.latitude, 
+          position.longitude
+        );
+      });
     }
 
   String launchGoogleMap({@required String lat, @required String long}) {
@@ -790,17 +819,21 @@ class MapScreenState extends State<MapScreen> {
     }
   }
 
-@override
+  @override
   void dispose() {
   Wakelock.disable();
     if(timer!=null){
       timer.cancel();
-//      Workmanager.cancelAll();
+      //Workmanager.cancelAll();
+    }
+
+    if (_locationSubscription != null) {
+      _locationSubscription.cancel();
     }
     super.dispose();
   }
 
-   navigateToPickupQrScreen() async {
+  navigateToPickupQrScreen() async {
     currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
     Map<String,dynamic> param = Map();
     param["order_id"]=widget.id;
@@ -831,19 +864,6 @@ class MapScreenState extends State<MapScreen> {
     param["longitude"] = longitude;
     param["address"] = "";
     await NetworkCall().callPostApi(param, ApiConstants.updateLocation);
-  }
-
-  void initWorkManager() async{
-   /*  Workmanager.initialize(
-      ,
-      isInDebugMode: true,
-    );
-
-     Workmanager.registerPeriodicTask(
-      "1",
-      fetchBackGround,
-      frequency: Duration(seconds: 2),
-    );*/
   }
 
   void callStartDeliveryApi(LocationData locationData) {
