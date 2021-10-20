@@ -105,8 +105,6 @@ class MapScreenState extends State<MapScreen> {
   Timer timer;
   SharedPreferences sharedPreferences;
 
-  Geolocator geolocator = Geolocator();
-
   @override
   void initState() {
     Wakelock.enable();
@@ -451,11 +449,7 @@ class MapScreenState extends State<MapScreen> {
 
   Future<void> getCurrentLocation() async {
      try {
-      
-      //locationData = await location.getLocation();
-
-      //USE GEOLOCATOR INSTEAD
-      position = await geolocator.getCurrentPosition();
+      locationData = await location.getLocation();
       
       GoogleMapController controller = await _controller.future;
         if(widget.isForDeliery){
@@ -464,21 +458,21 @@ class MapScreenState extends State<MapScreen> {
         
         CameraPosition cameraPosition = CameraPosition(
           target: LatLng(
-            position.latitude,
-            position.longitude,
+            locationData.latitude,
+            locationData.longitude,
           ),
           zoom: 16.00,
         );
         
         controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-       
-        updateCurrentMarker(position.longitude, position.latitude);
+        // print("position ${locationData.longitude}, ${locationData.latitude}");
+        updateCurrentMarker();
      } on Exception catch (e) {
        myPrintTag("error in location ", e.toString());
      }
   }
 
-  void updateCurrentMarker(double longitude, double latitude) {
+  void updateCurrentMarker() {
 
     setState(() {
       isCurrentLocation=true;
@@ -498,8 +492,8 @@ class MapScreenState extends State<MapScreen> {
       );
     });
     setPolyPoints(
-      longitude,
-      latitude
+      locationData.latitude,
+      locationData.longitude
     );
   }
 
@@ -773,8 +767,8 @@ class MapScreenState extends State<MapScreen> {
   }
 
   Future getLocationUpdate() async {
-      location.changeSettings(distanceFilter: 5);
-      _locationSubscription=location.onLocationChanged.distinct().listen((latLong) async {
+      location.changeSettings(interval: 1000);
+      _locationSubscription=location.onLocationChanged.listen((latLong) async {
         if(!mounted){
           return;
         }
@@ -784,40 +778,32 @@ class MapScreenState extends State<MapScreen> {
         );
       });
 
-      double previousLongitude;
-      double previousLatitude;
-
       timer = Timer.periodic(Duration(
         seconds: 2
       ), 
       (timer) async {
-     
-        if(previousLongitude != position.longitude || previousLatitude != position.latitude){
-          updateDriverLocation(
+        updateDriverLocation(
+          position.latitude,
+          position.longitude
+        );
+
+        GoogleMapController controller = await _controller.future;
+
+        CameraPosition cameraPosition = CameraPosition(
+          target: LatLng(
             position.latitude,
-            position.longitude
-          );
+            position.longitude,
+          ),
+          zoom: 16.00,
+        );
 
-          GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-          CameraPosition cameraPosition = CameraPosition(
-            target: LatLng(
-              position.latitude,
-              position.longitude,
-            ),
-            zoom: 16.00,
-          );
 
-          controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-          setPolyPoints(
-            position.latitude, 
-            position.longitude
-          );
-        }
-        
-        previousLatitude = position.latitude;
-        previousLongitude = position.longitude;
+        setPolyPoints(
+          position.latitude, 
+          position.longitude
+        );
       });
     }
 
