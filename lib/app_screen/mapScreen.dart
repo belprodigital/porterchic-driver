@@ -568,14 +568,16 @@ class MapScreenState extends State<MapScreen> {
         if (value) {
           sharedPreferences.setBool(ApiConstants.locationOff, true);
           await setLocationIcon();
-          //await getCurrentLocation();
+          await getCurrentLocation();
+          // initWorkManager();
           await getLocationUpdate();
         }
       });
     } else {
       sharedPreferences.setBool(ApiConstants.locationOff, true);
       await setLocationIcon();
-      //await getCurrentLocation();
+      await getCurrentLocation();
+      // initWorkManager();
       await getLocationUpdate();
     }
   }
