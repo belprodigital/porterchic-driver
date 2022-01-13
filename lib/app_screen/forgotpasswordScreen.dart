@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_country_picker/flutter_country_picker.dart';
+//import 'package:flutter_country_picker/flutter_country_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:porterchic_driver/app_screen/otpVerificationScreen.dart';
@@ -31,7 +31,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   var showLoader = false;
   bool isPhoneErrorShow = false;
   String errorPhoneText = requireField;
-  Country selectedCountry = Country.AE;
+  //Country selectedCountry = Country.AE;
   final GlobalKey<ScaffoldState> globalKey = GlobalKey();
 
   @override
@@ -129,30 +129,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             },
                           ),
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 50.0,
-                          margin: EdgeInsets.only(left: 5.0,right: 5.0),
-                          child: CountryPicker(
-                            selectedCountry: selectedCountry,
-                            showFlag: false,
-                            showName: false,
-                            showDialingCode: true,
-                            onChanged: (Country value) {
-                              setState(() {
-                                selectedCountry = value;
-                              });
+                        // Container(
+                        //   alignment: Alignment.center,
+                        //   width: 50.0,
+                        //   margin: EdgeInsets.only(left: 5.0,right: 5.0),
+                        //   child: CountryPicker(
+                        //     selectedCountry: selectedCountry,
+                        //     showFlag: false,
+                        //     showName: false,
+                        //     showDialingCode: true,
+                        //     onChanged: (Country value) {
+                        //       setState(() {
+                        //         selectedCountry = value;
+                        //       });
 
-                            },
+                        //     },
 
-                            dialingCodeTextStyle: TextStyle(
-                              color: blackColor,
-                              fontSize: 16.0,
-                              fontFamily: "JosefinSans",
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
+                        //     dialingCodeTextStyle: TextStyle(
+                        //       color: blackColor,
+                        //       fontSize: 16.0,
+                        //       fontFamily: "JosefinSans",
+                        //       fontWeight: FontWeight.w400,
+                        //     ),
+                        //   ),
+                        // ),
                         CustomtextFields.labelTextWidget(labelText: "Phone number"),
                         Visibility(
                           visible: isPhoneErrorShow,
@@ -269,8 +269,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
   Future callForgoPasswordApi() async{
     Map<String,dynamic> params = Map();
-    params["mobile"]="+"+selectedCountry.dialingCode+_phoneNumberController.text.trim();
-
+    //params["mobile"]="+"+selectedCountry.dialingCode+_phoneNumberController.text.trim();
+    params["mobile"]="+";
     Response response = await NetworkCall().callPostApi(params, ApiConstants.forgotPassword);
     setState(() {
       showLoader=false;
