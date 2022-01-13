@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_country_picker/flutter_country_picker.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:porterchic_driver/app_screen/otpVerificationScreen.dart';
@@ -31,7 +31,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   var showLoader = false;
   bool isPhoneErrorShow = false;
   String errorPhoneText = requireField;
-  //Country selectedCountry = Country.AE;
+  String selectedCountryCode = "+971";
   final GlobalKey<ScaffoldState> globalKey = GlobalKey();
 
   @override
@@ -129,30 +129,46 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             },
                           ),
                         ),
-                        // Container(
-                        //   alignment: Alignment.center,
-                        //   width: 50.0,
-                        //   margin: EdgeInsets.only(left: 5.0,right: 5.0),
-                        //   child: CountryPicker(
-                        //     selectedCountry: selectedCountry,
-                        //     showFlag: false,
-                        //     showName: false,
-                        //     showDialingCode: true,
-                        //     onChanged: (Country value) {
-                        //       setState(() {
-                        //         selectedCountry = value;
-                        //       });
-
-                        //     },
-
-                        //     dialingCodeTextStyle: TextStyle(
-                        //       color: blackColor,
-                        //       fontSize: 16.0,
-                        //       fontFamily: "JosefinSans",
-                        //       fontWeight: FontWeight.w400,
-                        //     ),
-                        //   ),
-                        // ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: 50.0,
+                          margin: EdgeInsets.only(left: 5.0,right: 5.0),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: CustomtextFields.textFields(
+                              text: selectedCountryCode,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16.0,
+                              textColor: blackColor
+                            ),
+                            onPressed: () {
+                              showCountryPicker(
+                                context: context,
+                                showPhoneCode: true,
+                                countryListTheme: CountryListThemeData(
+                                  flagSize: 0,
+                                  backgroundColor: Colors.white,
+                                  textStyle: TextStyle(
+                                      fontSize: 16, 
+                                      color: blackColor
+                                    ),
+                                    borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                ),
+                                onSelect: (Country country) {
+                                  setState(() {
+                                    selectedCountryCode = "+${country.phoneCode}";
+                                  });
+                                },
+                              );
+                            }
+                          ),
+                        ),
                         CustomtextFields.labelTextWidget(labelText: "Phone number"),
                         Visibility(
                           visible: isPhoneErrorShow,
