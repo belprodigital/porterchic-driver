@@ -47,7 +47,7 @@ dependencies:
   #lamp: ^0.0.6
   path_provider: ^1.6.11
   path: ^1.6.4
-  qr_code_scanner: ^0.0.13
+  qr_code_scanner: ^0.1.0
   flutter_masked_text: ^0.8.0
   image_picker: ^0.6.4
   image_cropper: '1.2.0'
