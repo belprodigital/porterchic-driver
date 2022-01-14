@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences.getInstance().then((sharedPreferences){
       userDataModel = UserDataModel.fromJson(json.decode(sharedPreferences.getString(ApiConstants.userData)));
       getNotificationCount();
-      KeyboardVisibility.onChange.listen((bool visible) {
+      var keyboardVisibilityController = KeyboardVisibilityController();
+      keyboardVisibilityController.onChange.listen((bool visible) {
         setState(() {
           isKeyboardVisible = visible;
         });
