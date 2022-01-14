@@ -461,39 +461,47 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   }
 
   Future selectedProfilePicFromGallary(BuildContext context) async{
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery,imageQuality: 50);
+    PickedFile file = await ImagePicker().getImage(
+        source: ImageSource.gallery,
+        imageQuality: 50
+    );
+
     cropImage(file);
   }
 
   Future selectedProfilePicFromCamera(BuildContext context) async{
     PickedFile file = await ImagePicker().getImage(
-        source: ImageSource.camera,imageQuality: 50);
+        source: ImageSource.camera,
+        imageQuality: 50
+    );
+
     cropImage(file);
   }
 
   Future cropImage(PickedFile file) async{
+    
     croppedFile = await ImageCropper.cropImage(
-        sourcePath: file.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-        ],
-        androidUiSettings: AndroidUiSettings(
-            hideBottomControls: true,
-            activeWidgetColor: Colors.grey,
-            toolbarTitle: 'Cropper',
-            toolbarColor: text_color,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        )
+      sourcePath: file.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      androidUiSettings: AndroidUiSettings(
+        hideBottomControls: true,
+        activeWidgetColor: Colors.grey,
+        toolbarTitle: 'Cropper',
+        toolbarColor: text_color,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.square,
+        lockAspectRatio: true
+      ),
+      iosUiSettings: IOSUiSettings(
+        minimumAspectRatio: 1.0,
+      )
     );
 
     if(croppedFile!=null){
-      setState(() {
-      });
+      setState(() {});
       /*await callUploadImage(croppedFile);*/
     }
   }
