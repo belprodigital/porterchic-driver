@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:porterchic_driver/app_screen/home_map_screen.dart';
 import 'package:porterchic_driver/app_screen/myDelieveriesScreen.dart';
@@ -42,17 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     initFirebaseService();
     SharedPreferences.getInstance().then((sharedPreferences){
-    userDataModel = UserDataModel.fromJson(json.decode(sharedPreferences.getString(ApiConstants.userData)));
-    getNotificationCount();
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
+      userDataModel = UserDataModel.fromJson(json.decode(sharedPreferences.getString(ApiConstants.userData)));
+      getNotificationCount();
+      KeyboardVisibility.onChange.listen((bool visible) {
         setState(() {
           isKeyboardVisible = visible;
         });
-
-      },
-    );
-  });
+      });
+    });
     super.initState();
   }
 
