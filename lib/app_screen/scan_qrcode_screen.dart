@@ -70,7 +70,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                                 if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
                                   await launch(launchWhatsApp(phone: whatsAppNum));
                                 }else{
-                                  Fluttertoast.showToast(msg: msg_install_whatsapp);
+                                  FlutterToast.showToast(msg: msg_install_whatsapp);
                                 }
                               },
                               child: Image.asset(
@@ -128,7 +128,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                             text: sendCodeBySms,
                             textColor: white_color,
                             function: (){
-                            Fluttertoast.showToast(msg: "Otp sent successfully");
+                            FlutterToast.showToast(msg: "Otp sent successfully");
                             navigateToOtpScreen();
                             },
                             radiusSize: 0.0
@@ -140,7 +140,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                           if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
                             await launch(launchWhatsApp(phone: whatsAppNum));
                           }else{
-                            Fluttertoast.showToast(msg: msg_install_whatsapp);
+                            FlutterToast.showToast(msg: msg_install_whatsapp);
                           }
                         },
                         child: Row(

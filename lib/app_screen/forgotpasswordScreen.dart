@@ -267,11 +267,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         _phoneFocusNode.hasFocus;
 
       });
-      //Fluttertoast.showToast(msg:phNoEmpty);
+      //FlutterToast.showToast(msg:phNoEmpty);
       return false;
     }else if(_phoneNumberController.text.trim().length < 6 ||
         _phoneNumberController.text.trim().length > 15){
-      //Fluttertoast.showToast(msg:phNoValid);
+      //FlutterToast.showToast(msg:phNoValid);
       setState(() {
         errorPhoneText = "Invalid Phone number";
         isPhoneErrorShow = true;
@@ -292,7 +292,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       showLoader=false;
     });
     Map<String,dynamic> data = jsonDecode(response.body);
-    Fluttertoast.showToast(msg:data["message"] );
+    FlutterToast.showToast(msg:data["message"] );
     if(data["status"]){
       _navigateToOtpScreen(userId:data["data"]["user_id"],accessToken: data["data"]["accessToken"]);
     }

@@ -211,7 +211,7 @@ class MapScreenState extends State<MapScreen> {
                                 if( await canLaunch("comgooglemaps://") ){
                                   await launch(launchGoogleMap(lat: receiverLatitude, long: receiverLongitude));
                                 }else{
-                                  Fluttertoast.showToast(msg: "Please install google map application");
+                                  FlutterToast.showToast(msg: "Please install google map application");
                                 }
                               },
                               child: Visibility(

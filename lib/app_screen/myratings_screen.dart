@@ -264,7 +264,7 @@ class _MyRatingsScreenState extends State<MyRatingsScreen> {
       }
       ratingCount = myRatingModel.rating.ratingCount;
     } else {
-      Fluttertoast.showToast(msg: "Something went wrong");
+      FlutterToast.showToast(msg: "Something went wrong");
     }
     setState(() {
       showLoader = false;

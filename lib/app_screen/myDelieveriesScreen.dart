@@ -336,7 +336,7 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
                                   isListVisible = !isListVisible;
                                 });
                               }else{
-                                Fluttertoast.showToast(msg: noPastOrders);
+                                FlutterToast.showToast(msg: noPastOrders);
                               }
                             },
                             child:Container(
@@ -505,7 +505,7 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
     setState(() {
       showLoader=false;
     });
-    //Fluttertoast.showToast(msg:data["message"] );
+    //FlutterToast.showToast(msg:data["message"] );
 
   }
 
@@ -650,7 +650,7 @@ class _MyDelieveriesScreenState extends State<MyDelieveriesScreen> {
               context,
               CupertinoPageRoute(builder: (context) => PreviewScreen()),
               (route) => false);
-          Fluttertoast.showToast(
+          FlutterToast.showToast(
               msg:
                   "Your account is deactivated by admin. Please contact support team");
         }

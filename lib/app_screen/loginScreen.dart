@@ -362,7 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _phoneFocusNode.hasFocus;
 
       });
-      //Fluttertoast.showToast(msg:phNoEmpty);
+      //FlutterToast.showToast(msg:phNoEmpty);
       return false;
     }else if(_phoneNumberController.text.trim().length < 6 ||
         _phoneNumberController.text.trim().length > 15){
@@ -372,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _phoneFocusNode.hasFocus;
 
       });
-     // Fluttertoast.showToast(msg:phNoValid);
+     // FlutterToast.showToast(msg:phNoValid);
       return false;
     }else if(_passwordController.text.trim().isEmpty){
       setState(() {
@@ -382,7 +382,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       });
       return false;
-      //Fluttertoast.showToast(msg:passwordEmpty );
+      //FlutterToast.showToast(msg:passwordEmpty );
     }else if(_passwordController.text.trim().length <6){
       setState(() {
         errorPassText = "Invalid password";
@@ -391,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       });
       return false;
-      //Fluttertoast.showToast(msg:passwordValid);
+      //FlutterToast.showToast(msg:passwordValid);
     }else{
       return true;
     }
@@ -417,7 +417,8 @@ class _LoginScreenState extends State<LoginScreen> {
       showLoader=false;
     });
     Map<String,dynamic> data = jsonDecode(response.body);
-    Fluttertoast.showToast(msg:data["message"] );
+
+    FlutterToast.showToast(msg:data["message"] );
     if(data["status"]){
       _sharedPreferences.setString(ApiConstants.accessToken, data["data"]["accessToken"]);
       _sharedPreferences.setBool(ApiConstants.isLogin,true);

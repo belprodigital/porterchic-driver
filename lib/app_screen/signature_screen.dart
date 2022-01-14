@@ -219,7 +219,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
           orderDetailsModel.data.order.receiverMobile
       );
     } else {
-      Fluttertoast.showToast(msg: data["message"]);
+      FlutterToast.showToast(msg: data["message"]);
     }
   }
 

@@ -84,7 +84,7 @@ class _CameraScreenState extends State<CameraScreen> {
                           if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
                             await launch(launchWhatsApp(phone: whatsAppNum));
                           }else{
-                            Fluttertoast.showToast(msg: msg_install_whatsapp);
+                            FlutterToast.showToast(msg: msg_install_whatsapp);
                           }
                         },
                        child: Image.asset(

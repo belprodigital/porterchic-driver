@@ -159,7 +159,7 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                       if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
                       await launch(launchWhatsApp(phone: whatsAppNum));
                       }else{
-                      Fluttertoast.showToast(msg: msg_install_whatsapp);
+                      FlutterToast.showToast(msg: msg_install_whatsapp);
                       }
                     },
                     child: Row(

@@ -89,7 +89,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                              if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){
                                await launch(launchWhatsApp(phone: whatsAppNum));
                              }else{
-                               Fluttertoast.showToast(msg: msg_install_whatsapp);
+                               FlutterToast.showToast(msg: msg_install_whatsapp);
                              }
 //                         _navigateToLoginScreen();
                            },

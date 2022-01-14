@@ -218,7 +218,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     if (_passwordController.text
         .trim()
         .isEmpty) {
-      //Fluttertoast.showToast(msg: passwordEmpty);
+      //FlutterToast.showToast(msg: passwordEmpty);
       setState(() {
         errorPassText = requireField;
         isPassErrorShow = true;
@@ -228,7 +228,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     } else if (_passwordController.text
         .trim()
         .length < 6) {
-      // Fluttertoast.showToast(msg: passwordValid);
+      // FlutterToast.showToast(msg: passwordValid);
       setState(() {
         errorPassText = "Invalid password";
         isPassErrorShow = true;
@@ -260,7 +260,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         showLoader=false;
       });
       Map<String, dynamic> data = json.decode(response.body);
-      Fluttertoast.showToast(msg: data["message"]);
+      FlutterToast.showToast(msg: data["message"]);
       if (data["status"]) {
         navigateToLoginScreen();
       }

@@ -253,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               context,
               CupertinoPageRoute(builder: (context) => PreviewScreen()),
               (route) => false);
-          Fluttertoast.showToast(
+          FlutterToast.showToast(
               msg:
                   "Your account is deactivated by admin. Please contact support team");
         }

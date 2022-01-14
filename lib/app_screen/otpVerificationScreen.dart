@@ -185,7 +185,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               isResendOtp=false;
                             });
                             callResendOtp();
-                            Fluttertoast.showToast(msg: otp_sent);
+                            FlutterToast.showToast(msg: otp_sent);
                             startTimer();
                           },
                           child: Align(
@@ -254,9 +254,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         errorOtpText = requireField;
         isOtpErrorShow = true;
         _confirmCodeFocusNode.hasFocus;
-
       });
-      //Fluttertoast.showToast(msg: valid_otp);
+      //FlutterToast.showToast(msg: valid_otp);
       return false;
     }else if(_confirmationCodeController.text.trim().length<6){
       setState(() {
@@ -265,7 +264,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         _confirmCodeFocusNode.hasFocus;
 
       });
-      //Fluttertoast.showToast(msg: valid_otp);
+      //FlutterToast.showToast(msg: valid_otp);
       return false;
     }else{
       return true;
@@ -291,7 +290,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       showLoader=false;
     });
     Map<String,dynamic> data = jsonDecode(response.body);
-    Fluttertoast.showToast(msg:data["message"] );
+    FlutterToast.showToast(msg:data["message"] );
     if(data["status"]){
       timer.cancel();
       _sharedPreferences.setString(ApiConstants.userData, jsonEncode(data["data"]));
