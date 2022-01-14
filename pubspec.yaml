@@ -44,7 +44,7 @@ dependencies:
   flutter_rating_bar: ^3.0.1+1
   qr_flutter: ^3.2.0
   camera: ^0.5.8+11
-  lamp: ^0.0.6
+  #lamp: ^0.0.6
   path_provider: ^1.6.11
   path: ^1.6.4
   qr_code_scanner: ^0.0.13

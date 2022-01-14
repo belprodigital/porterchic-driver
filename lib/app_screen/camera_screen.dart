@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lamp/lamp.dart';
+//import 'package:lamp/lamp.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:porterchic_driver/app_screen/imagePreviewScreen.dart';
@@ -104,25 +104,25 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    GestureDetector(
-                      onTap:(){
-                          if(isFlashOn){
-                          Lamp.turnOff();
-                          }else{
-                          Lamp.turnOn(intensity: 1.0);
-                          }
-                          setState(() {
-                          isFlashOn = !isFlashOn;
-                          });
-                       },child: Visibility(
-                      visible: false,
-                         child: Image.asset(
-                            ImageAssests.flash,
-                            height: 22.0,
-                            width: 25.0,
-                          ),
-                       )
-                    ),
+                    // GestureDetector(
+                    //   onTap:(){
+                    //       if(isFlashOn){
+                    //         Lamp.turnOff();
+                    //       }else{
+                    //         Lamp.turnOn(intensity: 1.0);
+                    //       }
+                    //       setState(() {
+                    //       isFlashOn = !isFlashOn;
+                    //       });
+                    //    },child: Visibility(
+                    //   visible: false,
+                    //      child: Image.asset(
+                    //         ImageAssests.flash,
+                    //         height: 22.0,
+                    //         width: 25.0,
+                    //       ),
+                    //    )
+                    // ),
                     GestureDetector(
                       onTap: (){
                         takePhoto(context);
@@ -170,21 +170,21 @@ class _CameraScreenState extends State<CameraScreen> {
       }
   }
 
-    Widget _cameraPreviewWidget() {
-      if (_cameraController == null || !_cameraController.value.isInitialized) {
-        return CustomtextFields.textFields(
-          text: loading,
-          fontWeight: FontWeight.w400,
-          fontSize: 16.0,
-          textColor: white_color,
-        );
-      }
-
-      return AspectRatio(
-        aspectRatio: 16.0/9.0,
-        child: CameraPreview(_cameraController),
+  Widget _cameraPreviewWidget() {
+    if (_cameraController == null || !_cameraController.value.isInitialized) {
+      return CustomtextFields.textFields(
+        text: loading,
+        fontWeight: FontWeight.w400,
+        fontSize: 16.0,
+        textColor: white_color,
       );
     }
+
+    return AspectRatio(
+      aspectRatio: 16.0/9.0,
+      child: CameraPreview(_cameraController),
+    );
+  }
 
   void takePhoto(BuildContext context) async{
        path = join((await getTemporaryDirectory()).path,"${DateTime.now()}.png");
