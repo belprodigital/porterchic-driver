@@ -36,7 +36,7 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
   var otpExpireTime="00:60";
   Timer timer;
   Timer otpVerifyTimer;
-  String otpButtonText = sendCodeBySms;
+  // String otpButtonText = sendCodeBySms;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                     color: divider_Color,
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 20.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -127,9 +127,9 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                     textColor: textColor,
                   ),
                   SizedBox(
-                    height: 60.0,
+                    height: 30.0,
                   ),
-                  /*DividerContainer.divider(
+                  DividerContainer.divider(
                     text: havingProblems.toUpperCase(),
                     context: context,
                     textColor: textColor,
@@ -141,19 +141,19 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                         backgroundColor: buttonColor,
                         fontFamily: 'JosefinSans',
                         fontSize: 16.0,
-                        text: otpButtonText,
+                        text: verifyViaEmail,
                         textColor: white_color,
                         function: (){
-                          setState(() {
-                            otpButtonText=resendOtp;
-                          });
+                          // setState(() {
+                          //   otpButtonText=resendOtp;
+                          // });
                           callSendCodeBySms();
 //                          navigateToCameraScreen();
                         },
                         radiusSize: 0.0
                     ),
                   ),
-                  SizedBox(height: 26.0,),*/
+                  SizedBox(height: 26.0,),
                   GestureDetector(
                     onTap: () async{
                       if(await canLaunch(launchWhatsApp(phone: whatsAppNum))){

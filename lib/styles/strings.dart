@@ -80,6 +80,7 @@ const  String noFeedBack="No Feedback";
 const  String ratingHistory="RATING HISTORY";
 const  String totalOrders ="Total orders";
 const  String totalMileage="Total Distance";
+const  String verifyViaEmail="Verify via Email";
 
 
 
