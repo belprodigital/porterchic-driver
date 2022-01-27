@@ -38,10 +38,11 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
   Timer otpVerifyTimer;
   bool isButtonDisabled = false;
   // String otpButtonText = sendCodeBySms;
+  
 
   @override
   void initState() {
-    startTimer();
+    // startTimer();
     startOtpVerifyTimer();
     super.initState();
   }
@@ -248,6 +249,40 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
     Map<String,dynamic> param = Map();
     param["order_id"] = widget.sId;
     NetworkCall().callPostApi(param, ApiConstants.driverPickupOtp);
+
+
+    var alertDialog = AlertDialog(
+        title: CustomtextFields.textFields(
+            text: "Porter chic",
+            fontWeight: FontWeight.w600,
+            fontSize: 22.0,
+            textColor: blackColor
+        ),
+        content: CustomtextFields.textFields(
+            text: "Verification link has been sent",
+            fontWeight: FontWeight.w400,
+            fontSize: 16.0,
+            maxLines: 4,
+            textColor: blackColor
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: CustomtextFields.textFields(
+                text: "OK",
+                fontWeight: FontWeight.w500,
+                fontSize: 19.0,
+                textColor: blackColor
+            ),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+      showDialog(context: context,
+        builder:(context)=>alertDialog,
+        barrierDismissible: false
+      );
   }
 
   void startOtpVerifyTimer() {
