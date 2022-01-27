@@ -36,6 +36,7 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
   var otpExpireTime="00:60";
   Timer timer;
   Timer otpVerifyTimer;
+  bool isButtonDisabled = false;
   // String otpButtonText = sendCodeBySms;
 
   @override
@@ -88,25 +89,25 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CustomtextFields.textFields(
-                        fontSize: 13.0,
-                        fontFamily: 'JosefinSans',
+                      // CustomtextFields.textFields(
+                      //   fontSize: 13.0,
+                      //   fontFamily: 'JosefinSans',
 
-                        text:extendTimes,
-                        fontWeight: FontWeight.w400,
-                        textColor: textColor,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 5.0),
-                        child: CustomtextFields.textFields(
-                          fontSize: 15.0,
-                          fontFamily: 'JosefinSans',
+                      //   text:extendTimes,
+                      //   fontWeight: FontWeight.w400,
+                      //   textColor: textColor,
+                      // ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 5.0),
+                      //   child: CustomtextFields.textFields(
+                      //     fontSize: 15.0,
+                      //     fontFamily: 'JosefinSans',
 
-                          text:otpExpireTime,
-                          fontWeight: FontWeight.w400,
-                          textColor: textColor,
-                        ),
-                      ),
+                      //     text:otpExpireTime,
+                      //     fontWeight: FontWeight.w400,
+                      //     textColor: textColor,
+                      //   ),
+                      // ),
                     ],
                   ),
                   Container(
@@ -138,17 +139,23 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
                   Container(
                     margin: EdgeInsets.only(top: 16.0),
                     child: CustomButtons.loginButton(
-                        backgroundColor: buttonColor,
+                        backgroundColor: isButtonDisabled? blackColorOpacity : buttonColor,
                         fontFamily: 'JosefinSans',
                         fontSize: 16.0,
                         text: verifyViaEmail,
                         textColor: white_color,
                         function: (){
-                          // setState(() {
-                          //   otpButtonText=resendOtp;
-                          // });
-                          callSendCodeBySms();
-//                          navigateToCameraScreen();
+                          if(isButtonDisabled){
+                            // disabled, do nothing
+                            print('disabled');
+                          } else {
+                            // do function
+                            callSendCodeBySms();
+                            startButtonTimer();
+                          }
+                          setState(() {
+                            isButtonDisabled=true;
+                          });
                         },
                         radiusSize: 0.0
                     ),
@@ -205,6 +212,18 @@ class _PickUpQrScreenState extends State<PickUpQrScreen> {
         timer.cancel();
       }
       print(timer.tick);
+    });
+  }
+
+  void startButtonTimer() {
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
+      if(timer.tick<=1){
+        setState(() {
+          isButtonDisabled = false;
+        });
+        timer.cancel();
+      }
+      // print('timer.tick ${timer.tick}');
     });
   }
 
